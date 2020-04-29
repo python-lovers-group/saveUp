@@ -31,12 +31,12 @@ To start the project locally clone the repository, start a virtual environment (
   <li>./ manage.py migrate - migrating the db</li>
   <li>./ manage.py runserver - see the project at localhost</li>
 </ul>
-<br/>
+
 To access the admin panel create the superuser using the command:
 <ul>
   <li>./ manage.py createsuperuser</li>
 </ul>
-<br/>
+
 Django creates a sqlite3 database locally. Instead of keeping the database in the repository, add a fixture so other users can fill their database with your content if necesary. Use the following commands:
 <ul>
   <li>./ manage.py dumpdata > [file name].json - creates a copy of the database in json file</li>
