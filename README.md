@@ -15,7 +15,7 @@
   <a href="https://github.com/python-lovers-group">About us</a>
 </h3>
 
-**saveUp** is an simple application that will teach you to save your hard-earned money and help you track your expenses.
+**saveUp** is a simple application that will teach you to save your hard-earned money and help you track your expenses.
 
 ### Contents 
 - [✅ Requirements](#%e2%9c%85-requirements)
@@ -37,7 +37,7 @@ To access the admin panel create the superuser using the command:
   <li>./ manage.py createsuperuser</li>
 </ul>
 
-Django creates a sqlite3 database locally. Instead of keeping the database in the repository, add a fixture so other users can fill their database with your content if necesary. Use the following commands:
+Django creates sqlite3 database locally. Instead of keeping the database in the repository, add a fixture so other users can fill their database with your content if necesary. Use the following commands:
 <ul>
   <li>./ manage.py dumpdata > [file name].json - creates a copy of the database in json file</li>
   <li>./ manage.py loaddata [file name].json - fill the database with content from json file</li>
