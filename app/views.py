@@ -18,8 +18,18 @@ class BillingViewSet(mixins.UpdateModelMixin,
                      mixins.ListModelMixin,
                      mixins.RetrieveModelMixin,
                      viewsets.GenericViewSet):
-    
     queryset = Billing.objects.all()
+    serializer_class = BillgingSerializer
+
+    authentication_classes = []
+    permission_classes = []
+
+
+class BillViewSet(mixins.UpdateModelMixin,
+                  mixins.ListModelMixin,
+                  mixins.RetrieveModelMixin,
+                  viewsets.GenericViewSet):
+    queryset = Bill.objects.all()
     serializer_class = BillgingSerializer
 
     authentication_classes = []

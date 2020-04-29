@@ -16,21 +16,22 @@ class BillgingSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-# class CategorySerializer(serializers.ModelSerializer):
-#      """Serializer for Category objects"""
+class CategorySerializer(serializers.ModelSerializer):
+    """Serializer for Category objects"""
 
-#     class Meta:
-#         model = Category
-#         fields = '__all__'
+    name = serializers.CharField(max_length=255)
+
+    class Meta:
+        model = Category
+        fields = '__all__'
 
 
-# class BillSerializer(serializers.ModelSerializer):
-#     """Serializer for Bill objects"""
+class BillSerializer(serializers.ModelSerializer):
+    """Serializer for Bill objects"""
 
-#     billing = serializers.StringRelatedField(read_only=True)
-#     categories = CategorySerializer(many=True, read_only=True)
+    billing = serializers.StringRelatedField(read_only=True)
+    categories = CategorySerializer(many=True, read_only=True)
 
-#     class Meta:
-#         model = Bill
-#         fields = '__all__'
-
+    class Meta:
+        model = Bill
+        fields = '__all__'

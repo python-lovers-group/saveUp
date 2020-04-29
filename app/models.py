@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
+
 class Billing(models.Model):
     """
     Billing model receives all the user's billing informations.
@@ -22,7 +23,7 @@ class Billing(models.Model):
 
     class Meta:
         ordering = ['-updated_at']
-        verbose_name_plural= "billings"
+        verbose_name_plural = "billings"
         verbose_name = "billing"
 
     def __str__(self):
@@ -36,15 +37,24 @@ class Category(models.Model):
     Fields:
     name: string
     """
-    name = models.CharField(max_length=255)
+
+    CATEGORY_CHOICES = [
+        ('food', 'food'),
+        ('entertainment', 'entertainment'),
+        ('health', 'health'),
+        ('clothes', 'clothes'),
+        ('others', 'others')
+    ]
+
+    name = models.CharField(max_length=255, choices=CATEGORY_CHOICES, default='others')
 
     class Meta:
         ordering = ['-name']
-        verbose_name_plural= "categories"
+        verbose_name_plural = "categories"
         verbose_name = "category"
 
     def __str__(self):
-        return f"<Category: {self.name}>" 
+        return f"<Category: {self.name}>"
 
 
 class Bill(models.Model):
@@ -64,7 +74,7 @@ class Bill(models.Model):
     """
 
     billing = models.ForeignKey(Billing, on_delete=models.CASCADE)
-    
+
     price = models.FloatField()
     categories = models.ManyToManyField(Category)
     where = models.CharField(max_length=50, blank=True, null=True)
@@ -73,11 +83,10 @@ class Bill(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    class Meta: 
+    class Meta:
         ordering = ['-updated_at']
-        verbose_name_plural= "bills"
+        verbose_name_plural = "bills"
         verbose_name = "bill"
 
     def __str__(self):
         return f"<Bill: {self.price}, {self.where}>"
-
