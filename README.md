@@ -25,8 +25,24 @@
 
 
 ## ✅ Requirements
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin feugiat, neque a imperdiet molestie, nunc neque feugiat diam, eu tempus nibh sem vitae massa. Nam consequat massa est, eget finibus nulla lacinia a. Integer sit amet diam libero. Aenean aliquet justo id mi vestibulum viverra. Maecenas malesuada accumsan sapien, eget volutpat risus euismod et. 
-
+To start the project locally clone the repository, start a virtual environment (using pipenv, virtualenv or similar) and install the requirements from pipfile/requirements.txt. Next, run the following commands:
+<ul>
+  <li>./ manage.py makemigrations - add migrations </li>
+  <li>./ manage.py migrate - migrating the db</li>
+  <li>./ manage.py runserver - see the project at localhost</li>
+</ul>
+<br/>
+To access the admin panel create the superuser using the command:
+<ul>
+  <li>./ manage.py createsuperuser</li>
+</ul>
+<br/>
+Django creates a sqlite3 database locally. Instead of keeping the database in the repository, add a fixture so other users can fill their database with your content if necesary. Use the following commands:
+<ul>
+  <li>./ manage.py dumpdata > [file name].json - creates a copy of the database in json file</li>
+  <li>./ manage.py loaddata [file name].json - fill the database with content from json file</li>
+</ul>
+For reference visit: https://coderwall.com/p/mvsoyg/django-dumpdata-and-loaddata
 
 
 ## 🪁 Join us
