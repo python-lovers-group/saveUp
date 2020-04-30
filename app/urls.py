@@ -6,7 +6,7 @@ from app.views import BillingViewSet, BillViewSet
 
 router = DefaultRouter()
 router.register(r"billing", BillingViewSet)
-router.register(r"billing/bill", BillViewSet)
+router.register(r"bills", BillViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),

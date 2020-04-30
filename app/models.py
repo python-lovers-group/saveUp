@@ -73,7 +73,7 @@ class Bill(models.Model):
     updated_at: datetime
     """
 
-    billing = models.ForeignKey(Billing, on_delete=models.CASCADE)
+    billing = models.ForeignKey(Billing, on_delete=models.CASCADE, related_name="bills")
 
     price = models.FloatField()
     categories = models.ManyToManyField(Category)
