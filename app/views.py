@@ -10,7 +10,7 @@ from app.models import (
 from app.serializers import (
     BillgingSerializer,
     # CategorySerializer,
-    # BillSerializer
+    BillSerializer
 )
 
 
@@ -25,12 +25,9 @@ class BillingViewSet(mixins.UpdateModelMixin,
     permission_classes = []
 
 
-class BillViewSet(mixins.UpdateModelMixin,
-                  mixins.ListModelMixin,
-                  mixins.RetrieveModelMixin,
-                  viewsets.GenericViewSet):
+class BillViewSet(viewsets.ModelViewSet):
     queryset = Bill.objects.all()
-    serializer_class = BillgingSerializer
+    serializer_class = BillSerializer
 
     authentication_classes = []
     permission_classes = []
