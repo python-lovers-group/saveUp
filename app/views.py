@@ -14,7 +14,7 @@ from app.models import (
 from app.serializers import (
     BillgingSerializer,
     BillSerializer
-    # CategorySerializer,
+    # CategorySerializer
 )
 
 
@@ -32,10 +32,11 @@ class BillingViewSet(mixins.UpdateModelMixin,
 
 
 class BillViewSet(viewsets.ModelViewSet):
+  
     """
     Manage user's bills in the database.
     """
-
+    
     queryset = Bill.objects.all()
     serializer_class = BillSerializer
 

@@ -42,10 +42,10 @@ class Category(models.Model):
         ('entertainment', 'entertainment'),
         ('health', 'health'),
         ('clothes', 'clothes'),
-        ('others', 'others')
+        ('other', 'other')
     ]
 
-    name = models.CharField(max_length=255, choices=CATEGORY_CHOICES, default='others')
+    name = models.CharField(max_length=255, choices=CATEGORY_CHOICES, default='other')
 
     class Meta:
         ordering = ['-name']
