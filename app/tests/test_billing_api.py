@@ -5,7 +5,7 @@ from rest_framework import status
 from rest_framework.test import APIClient
 
 from app.models import Billing
-from app.serializers import BillgingSerializer
+from app.serializers import BillingSerializer
 
 
 BILLING_URL = "/api/billing/"
@@ -24,12 +24,10 @@ class BillingApiTest(TestCase):
 
     def test_retrieve_billing_list(self):
         """Test retrieving one-piece Billing array."""
-        Billing.objects.create(user=self.user) # tutaj powinno byc automatycznie zrobione, ale poki tego nie ma zostawiam
-
         response = self.client.get(BILLING_URL)
 
         billings = Billing.objects.filter(user=self.user)
-        serializer = BillgingSerializer(billings, many=True)
+        serializer = BillingSerializer(billings, many=True)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, serializer.data)

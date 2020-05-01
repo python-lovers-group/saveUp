@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models.signals import post_save
 from django.contrib.auth.models import User
 
 
@@ -89,3 +90,12 @@ class Bill(models.Model):
 
     def __str__(self):
         return f"<Bill: {self.price}, {self.where}>"
+
+
+def users_billing(sender, instance, created, **kwargs):
+    print("witam")
+    if created:
+        Billing.objects.create(user=instance)
+
+
+post_save.connect(users_billing, sender=User)

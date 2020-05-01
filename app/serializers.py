@@ -30,7 +30,7 @@ class BillSerializer(serializers.ModelSerializer):
         return value
 
 
-class BillgingSerializer(serializers.ModelSerializer):
+class BillingSerializer(serializers.ModelSerializer):
     """Serializer for Billing objects + extra field bills which is related to BillSerializer"""
 
     bills = BillSerializer(many=True, read_only=True)
