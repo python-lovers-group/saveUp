@@ -6,16 +6,6 @@ from app.models import (
 )
 
 
-class BillgingSerializer(serializers.ModelSerializer):
-    """Serializer for Billing objects"""
-
-    user = serializers.StringRelatedField(read_only=True)
-
-    class Meta:
-        model = Billing
-        fields = '__all__'
-
-
 class CategorySerializer(serializers.ModelSerializer):
     """Serializer for Category objects"""
 
@@ -35,3 +25,17 @@ class BillSerializer(serializers.ModelSerializer):
     class Meta:
         model = Bill
         fields = '__all__'
+
+
+class BillgingSerializer(serializers.ModelSerializer):
+    """Serializer for Billing objects + extra field bills which is related to BillSerializer"""
+
+    user = serializers.StringRelatedField(read_only=True)
+    bills = BillSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Billing
+        fields = '__all__'
+
+
+

@@ -27,22 +27,22 @@
 ## ✅ Requirements
 To start the project locally clone the repository, start a virtual environment (using pipenv, virtualenv or similar) and install the requirements from pipfile/requirements.txt. Next, run the following commands:
 <ul>
-  <li>./ manage.py makemigrations - add migrations </li>
-  <li>./ manage.py migrate - migrating the db</li>
-  <li>./ manage.py runserver - see the project at localhost</li>
+  <li><code>./ manage.py makemigrations</code> - add migrations </li>
+  <li><code>./ manage.py migrate</code> - migrating the db</li>
+  <li><code>./ manage.py runserver</code> - see the project at localhost</li>
 </ul>
 
 To access the admin panel create the superuser using the command:
 <ul>
-  <li>./ manage.py createsuperuser</li>
+  <li><code>./ manage.py createsuperuser</code></li>
 </ul>
 
 Django creates sqlite3 database locally. Instead of keeping the database in the repository, add a fixture so other users can fill their database with your content if necesary. Use the following commands:
 <ul>
-  <li>./ manage.py dumpdata > [file name].json - creates a copy of the database in json file</li>
-  <li>./ manage.py loaddata [file name].json - fill the database with content from json file</li>
+  <li><code>./ manage.py dumpdata > [file name].json</code> - creates a copy of the database in json file</li>
+  <li><code>./ manage.py loaddata [file name].json </code>- fill the database with content from json file</li>
 </ul>
-For reference visit: https://coderwall.com/p/mvsoyg/django-dumpdata-and-loaddata
+For reference visit:<a href="https://coderwall.com/p/mvsoyg/django-dumpdata-and-loaddata">link</a> 
 
 
 ## 🪁 Join us
