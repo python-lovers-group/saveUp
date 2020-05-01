@@ -1,7 +1,10 @@
 from django.shortcuts import render
 from rest_framework import viewsets
 from rest_framework import mixins
+from rest_framework import status
 from rest_framework.response import Response
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 
 from app.models import (
     Bill,
@@ -20,13 +23,12 @@ class BillingViewSet(mixins.UpdateModelMixin,
                      mixins.RetrieveModelMixin,
                      viewsets.GenericViewSet):
     """
-    Manage user's billing in the dabase.
+    Manage user's billing in the database.
     """
     queryset = Billing.objects.all()
     serializer_class = BillgingSerializer
 
-    authentication_classes = []
-    permission_classes = []
+    permission_classes = [IsAuthenticated]
 
 
 class BillViewSet(viewsets.ModelViewSet):
@@ -37,8 +39,7 @@ class BillViewSet(viewsets.ModelViewSet):
     queryset = Bill.objects.all()
     serializer_class = BillSerializer
 
-    authentication_classes = []
-    permission_classes = []
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         queryset = self.queryset
@@ -48,3 +49,10 @@ class BillViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(categories__name__contains=category)
 
         return queryset
+
+    def perform_create(self, serializer):
+        """Create a new object"""
+        user_billing = Billing.objects.get(user=self.request.user)
+        if not user_billing:
+            Response(status=status.HTTP_400_BAD_REQUEST)
+        serializer.save(billing=user_billing)

@@ -18,9 +18,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
 class BillSerializer(serializers.ModelSerializer):
     """Serializer for Bill objects"""
-
     billing = serializers.StringRelatedField(read_only=True)
-    categories = CategorySerializer(many=True, read_only=True)
 
     class Meta:
         model = Bill
@@ -36,6 +34,4 @@ class BillgingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Billing
         fields = '__all__'
-
-
 

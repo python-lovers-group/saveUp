@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-
 class Billing(models.Model):
     """
     Billing model receives all the user's billing informations.
@@ -76,7 +75,7 @@ class Bill(models.Model):
     billing = models.ForeignKey(Billing, on_delete=models.CASCADE, related_name="bills")
 
     price = models.FloatField()
-    categories = models.ManyToManyField(Category)
+    categories = models.ManyToManyField(Category, null=True, blank=True)
     where = models.CharField(max_length=50, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
 
