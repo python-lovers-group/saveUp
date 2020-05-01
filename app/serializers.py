@@ -18,20 +18,20 @@ class CategorySerializer(serializers.ModelSerializer):
 
 class BillSerializer(serializers.ModelSerializer):
     """Serializer for Bill objects"""
-    billing = serializers.StringRelatedField(read_only=True)
+    # billing = serializers.StringRelatedField(read_only=True)
 
     class Meta:
         model = Bill
-        fields = '__all__'
+        exclude = ['billing']
 
 
 class BillgingSerializer(serializers.ModelSerializer):
     """Serializer for Billing objects + extra field bills which is related to BillSerializer"""
 
-    user = serializers.StringRelatedField(read_only=True)
     bills = BillSerializer(many=True, read_only=True)
 
     class Meta:
         model = Billing
         fields = '__all__'
+        read_only_fields = ['user']
 

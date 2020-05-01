@@ -11,5 +11,5 @@ router.register(r"bills", BillViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('billing/<str:pk>/', include(bill_router.urls))
+    # path('billing/<str:pk>/', include(bill_router.urls))
 ]

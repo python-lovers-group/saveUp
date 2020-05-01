@@ -3,7 +3,6 @@ from rest_framework import viewsets
 from rest_framework import mixins
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
 from app.models import (
@@ -16,6 +15,8 @@ from app.serializers import (
     BillSerializer
     # CategorySerializer
 )
+
+from app.permissions import IsOwner
 
 
 class BillingViewSet(mixins.UpdateModelMixin,
@@ -30,6 +31,9 @@ class BillingViewSet(mixins.UpdateModelMixin,
 
     permission_classes = [IsAuthenticated]
 
+    def get_queryset(self):
+        return Billing.objects.filter(user=self.request.user)
+
 
 class BillViewSet(viewsets.ModelViewSet):
   
@@ -40,10 +44,15 @@ class BillViewSet(viewsets.ModelViewSet):
     queryset = Bill.objects.all()
     serializer_class = BillSerializer
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsOwner]
 
     def get_queryset(self):
-        queryset = self.queryset
+        user_billing = Billing.objects.get(user=self.request.user)
+        if not user_billing:
+            Response(status=status.HTTP_400_BAD_REQUEST)
+
+        queryset = self.queryset.filter(billing=user_billing)
+
         category = self.request.query_params.get('category')
 
         if category:
