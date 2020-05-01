@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-
 class Billing(models.Model):
     """
     Billing model receives all the user's billing informations.
@@ -43,10 +42,10 @@ class Category(models.Model):
         ('entertainment', 'entertainment'),
         ('health', 'health'),
         ('clothes', 'clothes'),
-        ('others', 'others')
+        ('other', 'other')
     ]
 
-    name = models.CharField(max_length=255, choices=CATEGORY_CHOICES, default='others')
+    name = models.CharField(max_length=255, choices=CATEGORY_CHOICES, default='other')
 
     class Meta:
         ordering = ['-name']

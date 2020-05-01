@@ -8,6 +8,8 @@ router = DefaultRouter()
 router.register(r"billing", BillingViewSet)
 router.register(r"bills", BillViewSet)
 
+
 urlpatterns = [
     path('', include(router.urls)),
+    path('billing/<str:pk>/', include(bill_router.urls))
 ]

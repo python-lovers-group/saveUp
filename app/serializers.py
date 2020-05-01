@@ -9,7 +9,7 @@ from app.models import (
 class CategorySerializer(serializers.ModelSerializer):
     """Serializer for Category objects"""
 
-    name = serializers.CharField(max_length=255)
+    name = serializers.ChoiceField(choices=Category.CATEGORY_CHOICES, default='others')
 
     class Meta:
         model = Category
