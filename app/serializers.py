@@ -24,14 +24,25 @@ class BillSerializer(serializers.ModelSerializer):
         model = Bill
         exclude = ['billing']
 
+    def validate_price(self, value):
+        if value <= 0:
+            raise serializers.ValidationError("The price cannot be negative or equal to zero.")
+        return value
+
 
 class BillgingSerializer(serializers.ModelSerializer):
     """Serializer for Billing objects + extra field bills which is related to BillSerializer"""
 
     bills = BillSerializer(many=True, read_only=True)
+    total_bills = serializers.SerializerMethodField()
 
     class Meta:
         model = Billing
         fields = '__all__'
         read_only_fields = ['user']
 
+    def get_total_bills(self, obj):
+        total = 0
+        for bill in Bill.objects.filter(billing=obj):
+            total += bill.price
+        return total
