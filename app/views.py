@@ -10,12 +10,10 @@ import datetime
 from app.models import (
     Bill,
     Billing,
-    # Category,
 )
 from app.serializers import (
     BillingSerializer,
     BillSerializer
-    # CategorySerializer
 )
 
 from app.permissions import IsOwner
@@ -38,11 +36,10 @@ class BillingViewSet(mixins.UpdateModelMixin,
 
 
 class BillViewSet(viewsets.ModelViewSet):
-  
     """
     Manage user's bills in the database.
     """
-    
+
     queryset = Bill.objects.all()
     serializer_class = BillSerializer
 
