@@ -30,31 +30,31 @@ class Billing(models.Model):
         return f"<Billing: {self.user}>"
 
 
-class Category(models.Model):
-    """
-    Category model is used to categorize user's bills.
-
-    Fields:
-    name: string
-    """
-
-    CATEGORY_CHOICES = [
-        ('food', 'food'),
-        ('entertainment', 'entertainment'),
-        ('health', 'health'),
-        ('clothes', 'clothes'),
-        ('other', 'other')
-    ]
-
-    name = models.CharField(max_length=255, choices=CATEGORY_CHOICES, default='other')
-
-    class Meta:
-        ordering = ['-name']
-        verbose_name_plural = "categories"
-        verbose_name = "category"
-
-    def __str__(self):
-        return f"<Category: {self.name}>"
+# class Category(models.Model):
+#     """
+#     Category model is used to categorize user's bills.
+#
+#     Fields:
+#     name: string
+#     """
+#
+#     CATEGORY_CHOICES = [
+#         ('food', 'food'),
+#         ('entertainment', 'entertainment'),
+#         ('health', 'health'),
+#         ('clothes', 'clothes'),
+#         ('other', 'other')
+#     ]
+#
+#     name = models.CharField(max_length=255, choices=CATEGORY_CHOICES, default='other')
+#
+#     class Meta:
+#         ordering = ['-name']
+#         verbose_name_plural = "categories"
+#         verbose_name = "category"
+#
+#     def __str__(self):
+#         return f"<Category: {self.name}>"
 
 
 class Bill(models.Model):
@@ -73,10 +73,18 @@ class Bill(models.Model):
     updated_at: datetime
     """
 
+    CATEGORY_CHOICES = [
+        ('food', 'food'),
+        ('entertainment', 'entertainment'),
+        ('health', 'health'),
+        ('clothes', 'clothes'),
+        ('other', 'other')
+    ]
+
     billing = models.ForeignKey(Billing, on_delete=models.CASCADE, related_name="bills")
 
     price = models.FloatField()
-    categories = models.ManyToManyField(Category, blank=True)
+    categories = models.CharField(max_length=15, choices=CATEGORY_CHOICES)
     where = models.CharField(max_length=50, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
 

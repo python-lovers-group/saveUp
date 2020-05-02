@@ -10,7 +10,7 @@ import datetime
 from app.models import (
     Bill,
     Billing,
-    Category,
+    # Category,
 )
 from app.serializers import (
     BillingSerializer,
