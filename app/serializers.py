@@ -2,38 +2,15 @@ from rest_framework import serializers
 from app.models import (
     Bill,
     Billing,
-    Category,
 )
-
-
-class CategorySerializer(serializers.ModelSerializer):
-    """Serializer for Category objects"""
-
-    name = serializers.ChoiceField(choices=Category.CATEGORY_CHOICES, default='others')
-
-    class Meta:
-        model = Category
-        fields = '__all__'
 
 
 class BillSerializer(serializers.ModelSerializer):
     """Serializer for Bill objects"""
 
-    # billing = serializers.StringRelatedField(read_only=True)
-    categories = CategorySerializer(many=True)
-
     class Meta:
         model = Bill
         exclude = ['billing']
-
-    def create(self, validated_data):
-        categories_data = validated_data.pop('categories')
-        bill = Bill.objects.create(**validated_data)
-
-        for category_data in categories_data:
-            category_data, created = Category.objects.get_or_create(name=category_data['name'])
-            bill.categories.add(category_data)
-        return bill
 
     def validate_price(self, value):
         if value <= 0:

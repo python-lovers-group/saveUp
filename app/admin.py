@@ -1,6 +1,5 @@
 from django.contrib import admin
-from app.models import Billing, Category, Bill
+from app.models import Billing, Bill
 
 admin.site.register(Billing)
 admin.site.register(Bill)
-admin.site.register(Category)
