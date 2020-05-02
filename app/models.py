@@ -1,6 +1,7 @@
 from django.db import models
 from django.db.models.signals import post_save
 from django.contrib.auth.models import User
+from taggit.managers import TaggableManager
 
 
 class Billing(models.Model):
@@ -57,7 +58,7 @@ class Bill(models.Model):
     billing = models.ForeignKey(Billing, on_delete=models.CASCADE, related_name="bills")
 
     price = models.FloatField()
-    categories = models.CharField(max_length=15, choices=CATEGORY_CHOICES)
+    categories = TaggableManager()
     where = models.CharField(max_length=50, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
 
