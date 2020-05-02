@@ -19,6 +19,7 @@ class CategorySerializer(serializers.ModelSerializer):
 class BillSerializer(serializers.ModelSerializer):
     """Serializer for Bill objects"""
     # billing = serializers.StringRelatedField(read_only=True)
+    categories = CategorySerializer(many=True)
 
     class Meta:
         model = Bill
@@ -28,6 +29,13 @@ class BillSerializer(serializers.ModelSerializer):
         if value <= 0:
             raise serializers.ValidationError("The price cannot be negative or equal to zero.")
         return value
+
+    def create(self, validated_data):
+        categories_data = validated_data.pop('categories')
+        bill = Bill.objects.create(**validated_data)
+        for category_data in categories_data:
+            Category.objects.create(bill=bill, **category_data)
+        return bill
 
 
 class BillingSerializer(serializers.ModelSerializer):
