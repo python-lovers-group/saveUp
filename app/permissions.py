@@ -11,7 +11,11 @@ class IsOwner(permissions.BasePermission):
     """Permission for object owner"""
 
     def has_object_permission(self, request, view, obj):
-        return obj.billing.user == request.user
+        try:
+            if obj.user:
+                return obj.user == request.user
+        except AttributeError:
+            return obj.billing.user == request.user
 
 
 class IsAdminOrReadOnly(permissions.BasePermission):

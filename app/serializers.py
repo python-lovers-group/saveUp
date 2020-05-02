@@ -18,6 +18,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
 class BillSerializer(serializers.ModelSerializer):
     """Serializer for Bill objects"""
+
     # billing = serializers.StringRelatedField(read_only=True)
     categories = CategorySerializer(many=True)
 
@@ -36,6 +37,11 @@ class BillSerializer(serializers.ModelSerializer):
         for category_data in categories_data:
             Category.objects.create(bill=bill, **category_data)
         return bill
+
+    def validate_where(self, value):
+        if len(value) < 3:
+            raise serializers.ValidationError("Localization name length must be greater than 3.")
+        return value
 
 
 class BillingSerializer(serializers.ModelSerializer):

@@ -93,7 +93,6 @@ class Bill(models.Model):
 
 
 def users_billing(sender, instance, created, **kwargs):
-    print("witam")
     if created:
         Billing.objects.create(user=instance)
 
