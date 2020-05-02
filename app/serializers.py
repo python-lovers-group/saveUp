@@ -26,17 +26,19 @@ class BillSerializer(serializers.ModelSerializer):
         model = Bill
         exclude = ['billing']
 
+    def create(self, validated_data):
+        categories_data = validated_data.pop('categories')
+        bill = Bill.objects.create(**validated_data)
+
+        for category_data in categories_data:
+            category_data, created = Category.objects.get_or_create(name=category_data['name'])
+            bill.categories.add(category_data)
+        return bill
+
     def validate_price(self, value):
         if value <= 0:
             raise serializers.ValidationError("The price cannot be negative or equal to zero.")
         return value
-
-    def create(self, validated_data):
-        categories_data = validated_data.pop('categories')
-        bill = Bill.objects.create(**validated_data)
-        for category_data in categories_data:
-            Category.objects.create(bill=bill, **category_data)
-        return bill
 
     def validate_where(self, value):
         if len(value) < 3:
