@@ -18,7 +18,6 @@ class CategorySerializer(serializers.ModelSerializer):
 
 class BillSerializer(serializers.ModelSerializer):
     """Serializer for Bill objects"""
-    # billing = serializers.StringRelatedField(read_only=True)
 
     class Meta:
         model = Bill
@@ -27,6 +26,11 @@ class BillSerializer(serializers.ModelSerializer):
     def validate_price(self, value):
         if value <= 0:
             raise serializers.ValidationError("The price cannot be negative or equal to zero.")
+        return value
+
+    def validate_where(self, value):
+        if len(value) < 3:
+            raise serializers.ValidationError("Localization name length must be greater than 3.")
         return value
 
 
