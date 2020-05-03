@@ -5,7 +5,7 @@ from rest_framework import status
 from rest_framework.test import APIClient
 
 from app.models import Billing, Bill, Category
-from app.serializers import BillingSerializer, BillSerializer
+from app.serializers import BillSerializer
 
 BILL_URL = "/api/bills/"
 
@@ -83,9 +83,11 @@ class BillApiTest(TestCase):
 
     def test_create_bill(self):
         """Test creating new Bill object."""
+        category = create_sample_category("test-category")
+
         payload = {
             "billing": get_users_billing(self.user),
-            "categories": create_sample_category("test-category"),
+            "categories": category.id,
             "price": 99,
             "where": "Test",
             "description": "test test"
