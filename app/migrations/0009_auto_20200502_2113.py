@@ -7,7 +7,7 @@ import taggit.managers
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('taggit', '0003_taggeditem_add_unique_index'),
+        # ('taggit', '0003_taggeditem_add_unique_index'),
         ('app', '0008_auto_20200502_2021'),
     ]
 

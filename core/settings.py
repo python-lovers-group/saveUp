@@ -42,13 +42,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'rest_auth',
-
     'allauth',
     'allauth.account',
     'rest_auth.registration',
-
-    'taggit',
-    'taggit_serializer',
     # apps
     'accounts',
     'app',

@@ -9,10 +9,12 @@ import datetime
 from app.models import (
     Bill,
     Billing,
+    Category
 )
 from app.serializers import (
     BillingSerializer,
-    BillSerializer
+    BillSerializer,
+    CategorySerializer
 )
 
 from app.permissions import IsOwner
@@ -50,9 +52,10 @@ class BillViewSet(viewsets.ModelViewSet):
             Response(status=status.HTTP_400_BAD_REQUEST)
         queryset = self.queryset.filter(billing=user_billing)
 
-        category = self.request.query_params.get('category')
-        if category:
-            queryset = queryset.filter(categories__name__contains=category)
+        categories = self.request.query_params.get('categories')
+        if categories:
+            category_ids = self.__params_to_ints(categories)
+            queryset = queryset.filter(categories__id__in=category_ids)
 
         where = self.request.query_params.get('where')
         if where:
@@ -89,3 +92,9 @@ class BillViewSet(viewsets.ModelViewSet):
             Response(status=status.HTTP_400_BAD_REQUEST)
         serializer.save(billing=user_billing)
 
+
+class CategoryViewSet(viewsets.ModelViewSet):
+    """Manage Categories in the database"""
+
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
