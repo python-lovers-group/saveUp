@@ -46,7 +46,7 @@ For reference visit:<a href="https://coderwall.com/p/mvsoyg/django-dumpdata-and-
 
 
 ## 🪁 Join us
-Aliquam ut erat sed nibh varius eleifend. Vestibulum molestie eros et molestie imperdiet. Integer feugiat iaculis varius. Sed posuere neque ut suscipit tempor. Vivamus quis felis eu enim hendrerit hendrerit. Etiam tincidunt tempus erat, et blandit odio. Vivamus vestibulum dui id neque pellentesque egestas nec vitae massa.
+If you want to help us with the development of this project or become a contributor, do not hesitate to drop us a line via e-mail: michal.kawa@hotmail.com. We will gladly discuss any ideas or any upgrades to our current iteration of the project! :)
 
 ## 📜 License
 **saveUp** is **MIT licensed**, as found in the [LICENSE][l] file.

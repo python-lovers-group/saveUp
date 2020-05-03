@@ -7,6 +7,7 @@ verify_ssl = true
 
 [packages]
 django-rest-auth = "*"
+django-allauth = "*"
 
 [requires]
-python_version = "3.8"
+python_version = "*"
