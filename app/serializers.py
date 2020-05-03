@@ -1,12 +1,16 @@
 from rest_framework import serializers
+from taggit_serializer.serializers import (TagListSerializerField,
+                                           TaggitSerializer)
 from app.models import (
     Bill,
     Billing,
 )
 
 
-class BillSerializer(serializers.ModelSerializer):
+class BillSerializer(TaggitSerializer, serializers.ModelSerializer):
     """Serializer for Bill objects"""
+
+    categories = TagListSerializerField()
 
     class Meta:
         model = Bill

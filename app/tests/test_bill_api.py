@@ -77,13 +77,12 @@ class BillApiTest(TestCase):
         """Test creating new Bill object."""
         payload = {
             "billing": get_users_billing(self.user),
-            "categories": "other",
+            "categories": ["health"],
             "price": 99,
             "where": "Test",
             "description": "test test"
         }
         response = self.client.post(BILL_URL, payload)
-
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         bill = Bill.objects.get(id=response.data.get("id"))
         for key in payload.keys():
