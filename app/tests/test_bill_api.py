@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from rest_framework import status
 from rest_framework.test import APIClient
 
-from app.models import Billing, Bill
+from app.models import Billing, Bill, Category
 from app.serializers import BillingSerializer, BillSerializer
 
 BILL_URL = "/api/bills/"
@@ -25,6 +25,14 @@ def create_sample_bill(user, price=10, where='Sample Localization'):
     return Bill.objects.create(billing=get_users_billing(user),
                                price=price,
                                where=where)
+
+
+def create_sample_category(name):
+    """Create category or return if it existed"""
+    if Category.objects.filter(name=name).count():
+        return Category.objects.get(name=name)
+    else:
+        return Category.objects.create(name=name)
 
 
 class BillApiTestUnauthorized(TestCase):
@@ -77,7 +85,7 @@ class BillApiTest(TestCase):
         """Test creating new Bill object."""
         payload = {
             "billing": get_users_billing(self.user),
-            "categories": ["health"],
+            "categories": create_sample_category("test-category"),
             "price": 99,
             "where": "Test",
             "description": "test test"
