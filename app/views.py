@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from rest_framework import viewsets
 from rest_framework import mixins
 from rest_framework import status
@@ -89,3 +88,4 @@ class BillViewSet(viewsets.ModelViewSet):
         if not user_billing:
             Response(status=status.HTTP_400_BAD_REQUEST)
         serializer.save(billing=user_billing)
+

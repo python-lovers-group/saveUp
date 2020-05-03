@@ -7,8 +7,6 @@ from rest_framework.test import APIClient
 from app.models import Billing, Bill
 from app.serializers import BillingSerializer, BillSerializer
 
-from taggit.managers import TaggableManager
-
 BILL_URL = "/api/bills/"
 
 
@@ -79,7 +77,7 @@ class BillApiTest(TestCase):
         """Test creating new Bill object."""
         payload = {
             "billing": get_users_billing(self.user),
-            "categories": ["other"],
+            "categories": ["health"],
             "price": 99,
             "where": "Test",
             "description": "test test"
