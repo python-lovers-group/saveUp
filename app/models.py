@@ -66,7 +66,7 @@ class Bill(models.Model):
     billing = models.ForeignKey(Billing, on_delete=models.CASCADE, related_name="bills")
 
     price = models.FloatField()
-    categories = models.ManyToManyField('Category')
+    categories = models.ManyToManyField(Category)
     where = models.CharField(max_length=50, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
 
