@@ -116,3 +116,27 @@ class BillApiTest(TestCase):
         bill = Bill.objects.get(id=response.data.get("id"))
         serializer = BillSerializer(bill)
         self.assertEqual(response.data, serializer.data)
+
+    def test_filter_bills_by_category(self):
+        """Test filtering Bills queryset by category."""
+        category1 = create_sample_category("TestCategory1")
+        category2 = create_sample_category("TestCategory2")
+        
+        bill1 = create_sample_bill(user=self.user)
+        bill1.categories.add(category1)
+        bill1.categories.add(category2)
+
+        bill2 = create_sample_bill(user=self.user)
+        bill2.categories.add(category1)
+
+        bill3 = create_sample_bill(user=self.user)
+        bill3.categories.add(category2)
+
+        query = {
+            "categories": f"{category1.name}"
+        }
+        response = self.client.get(BILL_URL, query)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        bills = Bill.objects.filter(categories__name__contains=category1.name)
+        self.assertEqual(len(response.data), len(bills))
