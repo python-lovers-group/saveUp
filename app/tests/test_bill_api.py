@@ -68,7 +68,7 @@ class BillApiTest(TestCase):
         serializer = BillSerializer(bills, many=True)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data, serializer.data)
+        self.assertEqual(response.data['list_of_bills'], serializer.data)
 
     def test_bill_detail_view(self):
         """Test detail view of user's Bill."""
