@@ -5,6 +5,7 @@ from rest_auth.registration.views import SocialLoginView
 
 GITHUB_CALLBACK_URL = 'http://127.0.0.1:8000/accounts/github/login/callback/'
 
+
 class FacebookLogin(SocialLoginView):
     adapter_class = FacebookOAuth2Adapter
 

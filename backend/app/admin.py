@@ -1,4 +1,5 @@
 from django.contrib import admin
+
 from app.models import Billing, Bill, Category
 
 admin.site.register(Billing)

@@ -4,8 +4,8 @@ from django.contrib.auth import get_user_model
 from rest_framework import status
 from rest_framework.test import APIClient
 
-from app.models import Billing
-from app.serializers import BillingSerializer
+from backend.app import Billing
+from backend.app.serializers import BillingSerializer
 
 
 BILLING_URL = "/api/billing/"
