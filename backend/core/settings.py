@@ -43,19 +43,10 @@ INSTALLED_APPS = [
     # dependencies
     'rest_framework',
     'rest_framework.authtoken',
-    'rest_auth',
-    'allauth',
-    'allauth.account',
-    'rest_auth.registration',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.facebook',
     # apps
-    'accounts',
+    'user',
     'app',
 ]
-
-# django-allauth settings
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 SITE_ID = 1
 
