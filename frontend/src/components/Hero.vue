@@ -1,12 +1,14 @@
 <template>
   <v-content>
-    <v-container fill-height fluid>
-      <v-row class="pt-12">
-        <v-col cols="12" sm="2"></v-col>
-        <v-col cols="12" sm="4" class="mt-auto">
-          <h4 class="display-2 font-weight-bold hero-title pt-12">Manage your billings with us!</h4>
-          <h6 class="title font-weight-bold hero-subtitle">
-            Keep in touch with your friends.
+    <v-container fill-height fluid class="header-container">
+      <v-row>
+        <v-col cols="12" md="2"></v-col>
+        <v-col cols="12" md="4" class="pt-12">
+          <h4 class="display-3 font-weight-bold hero-title">
+            Manage your billings with us!
+          </h4>
+          <h6 class="title font-weight-bold hero-subtitle mt-0">
+            Learn how to save your money.
           </h6>
           <v-btn
                   rounded
@@ -24,6 +26,13 @@
                   dark
           ><span class="font-weight-black">Learn more</span></v-btn
           >
+        </v-col>
+        <v-col cols="12" md="5" class="mt-5">
+          <v-img
+                  src="../assets/svgs/main-banner.svg"
+                  class="mr-5"
+                  max-width="500px"
+          ></v-img>
         </v-col>
       </v-row>
     </v-container>
@@ -43,5 +52,12 @@ export default {
 
   .hero-subtitle {
     color: #00A896;
+  }
+
+  .header-container {
+    background: #fff url("../assets/svgs/bg-hero.svg") no-repeat;
+    /*background-position: 1--wh;*/
+    /*background-size: contain;*/
+    height: calc(100vh - 72px);
   }
 </style>
