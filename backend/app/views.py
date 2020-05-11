@@ -1,4 +1,4 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, authentication
 from rest_framework import mixins
 from rest_framework import status
 from rest_framework.response import Response
@@ -31,7 +31,7 @@ class BillingViewSet(mixins.UpdateModelMixin,
     """
     queryset = Billing.objects.all()
     serializer_class = BillingSerializer
-
+    authentication_classes = (authentication.TokenAuthentication,)
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
@@ -48,7 +48,7 @@ class BillViewSet(viewsets.ModelViewSet):
 
     queryset = Bill.objects.all()
     serializer_class = BillSerializer
-
+    authentication_classes = (authentication.TokenAuthentication,)
     permission_classes = [IsAuthenticated, IsOwner]
 
     def get_queryset(self):
