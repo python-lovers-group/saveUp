@@ -10,16 +10,24 @@ const AUTH_API_URL = "http://127.0.0.1:8100/accounts/";
 const state = {
   status: "",
   token: localStorage.getItem("token") || "",
-  user: {}
+  user: {},
+  loading: false,
 };
 
 const mutations = {
+  [types.START_LOADING](state) {
+    state.loading = true;
+  },
+
+  [types.END_LOADING](state) {
+    state.loading = false;
+  },
+
   [types.AUTH_REQUEST](state) {
     state.status = "loading";
   },
 
   [types.AUTH_SUCCESS](state, token, user) {
-    console.log("witam");
     state.status = "success";
     state.token = token;
     state.user = user;
@@ -37,6 +45,8 @@ const mutations = {
 
 const actions = {
   login({ commit }, user) {
+    commit(types.START_LOADING);
+
     return new Promise((resolve, reject) => {
       commit(types.AUTH_REQUEST);
       axios({ url: AUTH_API_URL + "login/", data: user, method: "POST" })
@@ -46,11 +56,14 @@ const actions = {
           const user = {};
           localStorage.setItem("token", token);
           axios.defaults.headers.common["Authorization"] = "Token: " + token;
+
+          commit(types.END_LOADING);
           commit(types.AUTH_SUCCESS, token, user);
           resolve(resp);
         })
         .catch(err => {
           commit(types.AUTH_ERROR, err);
+          commit(types.END_LOADING);
           localStorage.removeItem("token");
           reject(err);
         });
@@ -58,6 +71,8 @@ const actions = {
   },
 
   register({ commit }, user) {
+    commit(types.START_LOADING);
+
     return new Promise((resolve, reject) => {
       commit(types.AUTH_REQUEST);
       axios({
@@ -71,11 +86,14 @@ const actions = {
           const user = {};
           localStorage.setItem("token", token);
           axios.defaults.headers.common["Authorization"] = "Token: " + token;
+
+          commit(types.END_LOADING);
           commit(types.AUTH_SUCCESS, token, user);
           resolve(resp);
         })
         .catch(err => {
           commit(types.AUTH_ERROR, err);
+          commit(types.END_LOADING);
           localStorage.removeItem("token");
           reject(err);
         });
@@ -83,8 +101,10 @@ const actions = {
   },
 
   logout({ commit }) {
+    commit(types.START_LOADING);
     return new Promise((resolve, reject) => {
       commit(types.LOGOUT);
+      commit(types.END_LOADING);
       localStorage.removeItem("token");
       delete axios.defaults.headers.common["Authorization"];
       resolve();
@@ -94,7 +114,9 @@ const actions = {
 };
 const getters = {
   isLoggedIn: state => !!state.token,
-  authStatus: state => state.status
+  authStatus: state => state.status,
+  getUser: state => state.user,
+  loading: state => state.loading,
 };
 
 export default new Vuex.Store({

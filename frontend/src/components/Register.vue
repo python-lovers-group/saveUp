@@ -4,7 +4,13 @@
     <form @submit.prevent="register">
       <label for="username">username</label>
       <div>
-        <input id="username" type="text" v-model="username" required autofocus />
+        <input
+          id="username"
+          type="text"
+          v-model="username"
+          required
+          autofocus
+        />
       </div>
 
       <label for="email">E-Mail Address</label>
@@ -52,7 +58,7 @@ export default {
         username: this.username,
         email: this.email,
         password1: this.password,
-        password2: this.password_confirmation,
+        password2: this.password_confirmation
       };
       this.$store
         .dispatch("register", data)
