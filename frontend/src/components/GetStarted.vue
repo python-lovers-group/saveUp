@@ -4,12 +4,12 @@
       <v-col cols="12" md="1"></v-col>
       <v-col cols="12" md="6" class="getting-started-icons">
         <v-img
-                src="../assets/svgs/getting-started-icons-1.svg"
-                max-width="600px"
+          src="../assets/svgs/getting-started-icons-1.svg"
+          max-width="600px"
         ></v-img>
         <v-img
-                src="../assets/svgs/getting-started-icons-2.svg"
-                max-width="600px"
+          src="../assets/svgs/getting-started-icons-2.svg"
+          max-width="600px"
         ></v-img>
       </v-col>
       <v-col cols="12" md="5" class="getting-started-text">
@@ -73,13 +73,12 @@ section {
   }
 }
 
-  .getting-started-icons {
-    top: 12rem;
-  }
+.getting-started-icons {
+  top: 12rem;
+}
 
-  .getting-started-text {
-    top: 18rem;
-    right: 0;
-  }
-
+.getting-started-text {
+  top: 18rem;
+  right: 0;
+}
 </style>

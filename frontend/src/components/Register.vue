@@ -57,8 +57,8 @@ export default {
       let data = {
         username: this.username,
         email: this.email,
-        password1: this.password,
-        password2: this.password_confirmation
+        password: this.password
+        // password2: this.password_confirmation
       };
       this.$store
         .dispatch("register", data)
