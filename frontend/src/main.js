@@ -4,10 +4,9 @@ import router from "./router";
 import store from "./store";
 import Axios from "axios";
 import vuetify from "./plugins/vuetify";
-import jQuery from 'jquery'
-import 'popper.js';
-import 'bootstrap';
-
+import jQuery from "jquery";
+import "popper.js";
+import "bootstrap";
 
 window.$ = window.jQuery = jQuery;
 Vue.config.productionTip = false;
