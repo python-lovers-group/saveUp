@@ -1,6 +1,6 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-light">
-    <img class="navbar-brand ml-5" src="../assets/svgs/logo.svg" />
+    <img class="navbar-brand ml-5" style="cursor: pointer" @click="reconnectToHome" src="../assets/svgs/logo.svg" />
     <v-spacer></v-spacer>
     <v-spacer></v-spacer>
     <button
@@ -18,7 +18,7 @@
       <div class="navbar-nav">
         <a class="nav-item nav-main" href="#">Products</a>
         <a class="nav-item nav-main" href="#">About us</a>
-        <a class="nav-item nav-main" href="#">Help</a>
+        <router-link class="nav-item nav-main" :to="{ name: 'Login' }">Login</router-link>
       </div>
       <v-btn rounded color="#02C39A" class="nav-btn" dark>Get Started</v-btn>
     </div>
@@ -27,7 +27,12 @@
 
 <script>
 export default {
-  name: "NavBar"
+  name: "NavBar",
+  methods: {
+    reconnectToHome() {
+      this.$router.push({name: "Home"});
+    }
+  }
 };
 </script>
 

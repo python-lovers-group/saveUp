@@ -59,6 +59,4 @@ export default {
     height: calc(100vh - 72px);
   }
 }
-
-
 </style>
