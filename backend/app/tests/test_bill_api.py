@@ -4,8 +4,8 @@ from django.contrib.auth import get_user_model
 from rest_framework import status
 from rest_framework.test import APIClient
 
-from backend.app import Billing, Bill, Category
-from backend.app.serializers import BillSerializer
+from app.models import Billing, Bill, Category
+from app.serializers import BillSerializer
 
 BILL_URL = "/api/bills/"
 
@@ -43,7 +43,7 @@ class BillApiTestUnauthorized(TestCase):
     def test_permissions_and_auth_is_required(self):
         """Test that authentication credential is required."""
         response = self.client.get(BILL_URL)
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
 class BillApiTest(TestCase):
@@ -121,7 +121,7 @@ class BillApiTest(TestCase):
         """Test filtering Bills queryset by category."""
         category1 = create_sample_category("TestCategory1")
         category2 = create_sample_category("TestCategory2")
-        
+
         bill1 = create_sample_bill(user=self.user)
         bill1.categories.add(category1)
         bill1.categories.add(category2)
