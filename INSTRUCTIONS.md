@@ -21,7 +21,7 @@ Next, follow the steps:
 <li>Go to user/create to create a new user</li>
 <li>Go to user/token to get an authentication token</li>
 <li>In mod header extension create a new Request Header</li>
-<li>In the field name choose Authentication</li>
+<li>In the field name choose Authorization</li>
 <li>In the field Value pass the following: Token &#60;your_token_key&#62; (important: notice the whitespace betweend the Token and key!)</li>
 <li>Make a request</li>
 </ul>
