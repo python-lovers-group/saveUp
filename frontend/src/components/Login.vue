@@ -1,11 +1,6 @@
 <template>
   <v-content>
     <v-container fill-height fluid class="header-container">
-      <v-row v-if="error">
-        <v-flex xs="12" sm="6" class="pa-5" offset-sm3>
-          <Alert />
-        </v-flex>
-      </v-row>
       <v-row>
         <v-col cols="12" sm="1"></v-col>
         <v-col cols="12" md="4" class="">
@@ -62,11 +57,9 @@
 
 <script>
 import { mapGetters } from "vuex";
-import Alert from "./Alert";
 
 export default {
   name: "Login",
-  components: { Alert },
   data() {
     return {
       username: "",
@@ -79,7 +72,7 @@ export default {
     ...mapGetters({
       user: "getUser",
       loading: "loading",
-      error: "getError"
+      message: "getMessage"
     })
   },
   watch: {
@@ -94,8 +87,21 @@ export default {
       let password = this.password;
       this.$store
         .dispatch("login", { username, password })
-        .then(() => this.$router.push({ name: "Home" }))
-        .catch(err => console.log(err));
+        .then(() => {
+          window.Toast.fire({
+            icon: "success",
+            title: this.message
+          });
+          this.$router.push({ name: "Home" });
+        })
+        .catch(err => {
+          window.Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Something went wrong! Please try log in one more time!"
+          });
+          console.log(err);
+        });
     }
   }
 };

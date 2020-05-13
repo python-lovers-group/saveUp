@@ -8,15 +8,37 @@ Vue.use(Vuex);
 // const AUTH_API_URL = "http://127.0.0.1:8100/accounts/";
 const HEROKU_APP_API_URL = "https://saveupyourmoney.herokuapp.com/";
 
+const TOKEN = localStorage.getItem("token");
+
+if(TOKEN) {
+  axios.defaults.headers.common["Authorization"] =
+      "Token: " + TOKEN;
+  axios({
+    url: HEROKU_APP_API_URL + "user/current/",
+    method: "GET"
+  }).then(resp => {
+    console.log(resp.data);
+  }).catch(err => console.log(err));
+}
+
 const state = {
   status: "",
   token: localStorage.getItem("token") || "",
   user: {},
   loading: false,
-  error: null
+  error: null,
+  message: null
 };
 
 const mutations = {
+  [types.SET_MESSAGE](state, payload) {
+    state.message = payload;
+  },
+
+  [types.CLEAR_MESSAGE](state) {
+    state.message = null;
+  },
+
   [types.SET_ERROR](state, payload) {
     state.error = payload;
   },
@@ -58,6 +80,7 @@ const actions = {
   login({ commit }, user) {
     commit(types.START_LOADING);
     commit(types.CLEAR_ERROR);
+    commit(types.CLEAR_MESSAGE);
 
     return new Promise((resolve, reject) => {
       commit(types.AUTH_REQUEST);
@@ -74,6 +97,7 @@ const actions = {
           localStorage.setItem("token", resp.data.token);
           axios.defaults.headers.common["Authorization"] =
             "Token: " + resp.data.token;
+          commit(types.SET_MESSAGE, "You have successfully logged in!");
           commit(types.END_LOADING);
           resolve(resp);
         })
@@ -89,6 +113,7 @@ const actions = {
 
   register({ commit }, user) {
     commit(types.START_LOADING);
+    commit(types.CLEAR_MESSAGE);
     commit(types.CLEAR_ERROR);
 
     return new Promise((resolve, reject) => {
@@ -99,14 +124,8 @@ const actions = {
         method: "POST"
       })
         .then(resp => {
-          // const token = resp.data.key;
-          // const user = resp.data.user;
-          // const userObj = {...resp.data};
-          // localStorage.setItem("token", token);
-          // axios.defaults.headers.common["Authorization"] = "Token: " + token;
-          console.log(resp.data);
           commit(types.END_LOADING);
-          // commit(types.AUTH_SUCCESS, token, userObj);
+          commit(types.SET_MESSAGE, "Your account was created successfully!");
           resolve(resp);
         })
         .catch(err => {
@@ -121,11 +140,14 @@ const actions = {
 
   logout({ commit }) {
     commit(types.START_LOADING);
+    commit(types.CLEAR_MESSAGE);
+
     return new Promise((resolve, reject) => {
       commit(types.LOGOUT);
       commit(types.END_LOADING);
       localStorage.removeItem("token");
       delete axios.defaults.headers.common["Authorization"];
+      commit(types.SET_MESSAGE, "See you later!");
       resolve();
       console.log(reject);
     });
@@ -140,7 +162,8 @@ const getters = {
   authStatus: state => state.status,
   getUser: state => state.user,
   loading: state => state.loading,
-  getError: state => state.error
+  getError: state => state.error,
+  getMessage: state => state.message
 };
 
 export default new Vuex.Store({

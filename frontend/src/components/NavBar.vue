@@ -23,23 +23,71 @@
       <div class="navbar-nav">
         <a class="nav-item nav-main" href="#">Products</a>
         <a class="nav-item nav-main" href="#">About us</a>
-        <router-link class="nav-item nav-main" :to="{ name: 'Login' }"
+        <router-link v-if="!isLoggedIn" class="nav-item nav-main" :to="{ name: 'Login' }"
           >Login</router-link
         >
       </div>
-      <v-btn rounded color="#02C39A" class="nav-btn" dark>Get Started</v-btn>
+      <v-btn
+        rounded
+        color="#02C39A"
+        class="nav-btn"
+        v-if="!isLoggedIn"
+        :to="{ name: 'Register' }"
+        dark
+        >Get Started</v-btn
+      >
+      <v-btn
+              rounded
+              color="#02C39A"
+              class="nav-btn"
+              @click="logout"
+              v-if="isLoggedIn"
+              dark
+      >Logout</v-btn
+      >
     </div>
   </nav>
 </template>
 
 <script>
+  import { mapGetters } from "vuex";
+
 export default {
   name: "NavBar",
   methods: {
     reconnectToHome() {
       this.$router.push({ name: "Home" });
+    },
+
+    logout() {
+      window.Swal.fire({
+        title: 'Are you sure?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Logout!'
+      }).then((result) => {
+        if (result.value) {
+          this.$store.dispatch("logout")
+              .then(() => {
+                this.$router.push({ name: "Home" })
+                window.Toast.fire({
+                  icon: "success",
+                  title: this.message
+                });
+              })
+              .catch(err => console.log(err));
+        }
+      });
     }
-  }
+  },
+  computed: {
+    ...mapGetters({
+      isLoggedIn: "isLoggedIn",
+      message: "getMessage"
+    })
+  },
 };
 </script>
 
