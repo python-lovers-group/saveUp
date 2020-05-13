@@ -10,15 +10,16 @@ const HEROKU_APP_API_URL = "https://saveupyourmoney.herokuapp.com/";
 
 const TOKEN = localStorage.getItem("token");
 
-if(TOKEN) {
-  axios.defaults.headers.common["Authorization"] =
-      "Token: " + TOKEN;
+if (TOKEN) {
+  axios.defaults.headers.common["Authorization"] = "Token: " + TOKEN;
   axios({
     url: HEROKU_APP_API_URL + "user/current/",
     method: "GET"
-  }).then(resp => {
-    console.log(resp.data);
-  }).catch(err => console.log(err));
+  })
+    .then(resp => {
+      console.log(resp.data);
+    })
+    .catch(err => console.log(err));
 }
 
 const state = {
