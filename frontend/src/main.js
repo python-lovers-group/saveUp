@@ -40,3 +40,5 @@ const Toast = window.Swal.mixin({
 });
 
 window.Toast = Toast;
+
+

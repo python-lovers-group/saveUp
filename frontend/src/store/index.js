@@ -9,26 +9,20 @@ Vue.use(Vuex);
 const HEROKU_APP_API_URL = "https://saveupyourmoney.herokuapp.com/";
 
 const TOKEN = localStorage.getItem("token");
+let user = window.localStorage.getItem("user");
 
-if (TOKEN) {
-  axios.defaults.headers.common["Authorization"] = "Token: " + TOKEN;
-  axios({
-    url: HEROKU_APP_API_URL + "user/current/",
-    method: "GET"
-  })
-    .then(resp => {
-      console.log(resp.data);
-    })
-    .catch(err => console.log(err));
-}
 
 const state = {
   status: "",
-  token: localStorage.getItem("token") || "",
-  user: {},
+  token: TOKEN || "",
+  user: TOKEN ? JSON.parse(user) : {},
   loading: false,
   error: null,
   message: null
+};
+
+const saveUser = () => {
+  window.localStorage.setItem("user", JSON.stringify(state.user));
 };
 
 const mutations = {
@@ -64,7 +58,7 @@ const mutations = {
     state.status = "success";
     state.token = payload.token;
     state.user = payload.user;
-    console.log(payload.user);
+    saveUser();
   },
 
   [types.AUTH_ERROR](state, error) {
@@ -74,6 +68,8 @@ const mutations = {
   [types.LOGOUT](state) {
     state.status = "";
     state.token = "";
+    state.user = {};
+    saveUser();
   }
 };
 
@@ -97,7 +93,7 @@ const actions = {
           });
           localStorage.setItem("token", resp.data.token);
           axios.defaults.headers.common["Authorization"] =
-            "Token: " + resp.data.token;
+            "Token " + resp.data.token;
           commit(types.SET_MESSAGE, "You have successfully logged in!");
           commit(types.END_LOADING);
           resolve(resp);
@@ -147,6 +143,7 @@ const actions = {
       commit(types.LOGOUT);
       commit(types.END_LOADING);
       localStorage.removeItem("token");
+      localStorage.removeItem("user");
       delete axios.defaults.headers.common["Authorization"];
       commit(types.SET_MESSAGE, "See you later!");
       resolve();
@@ -156,7 +153,7 @@ const actions = {
 
   clearError({ commit }) {
     commit(types.CLEAR_ERROR);
-  }
+  },
 };
 const getters = {
   isLoggedIn: state => !!state.token,
