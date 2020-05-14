@@ -11,7 +11,6 @@ const HEROKU_APP_API_URL = "https://saveupyourmoney.herokuapp.com/";
 const TOKEN = localStorage.getItem("token");
 let user = window.localStorage.getItem("user");
 
-
 const state = {
   status: "",
   token: TOKEN || "",
@@ -153,7 +152,7 @@ const actions = {
 
   clearError({ commit }) {
     commit(types.CLEAR_ERROR);
-  },
+  }
 };
 const getters = {
   isLoggedIn: state => !!state.token,
