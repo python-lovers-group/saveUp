@@ -4,6 +4,7 @@ from app.models import (
     Billing,
     Category
 )
+from datetime import date
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -40,6 +41,7 @@ class BillingSerializer(serializers.ModelSerializer):
 
     bills = BillSerializer(many=True, read_only=True)
     total_bills = serializers.SerializerMethodField()
+    total_daily = serializers.SerializerMethodField()
 
     class Meta:
         model = Billing
@@ -51,3 +53,11 @@ class BillingSerializer(serializers.ModelSerializer):
         for bill in Bill.objects.filter(billing=obj):
             total += bill.price
         return total
+
+    def get_total_daily(self, obj):
+        queryset = Bill.objects.filter(billing=obj,
+                                       created_at__year=date.today().year,
+                                       created_at__month=date.today().month,
+                                       created_at__day=date.today().day)
+        serializer = BillSerializer(instance=queryset, many=True)
+        return serializer.data

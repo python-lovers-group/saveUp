@@ -8,8 +8,10 @@ class Category(models.Model):
     Category model is used to categorize user's bills.
     Fields:
     name: string
+    user: User (FK)
     """
     name = models.CharField(max_length=255)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Meta:
         ordering = ['-name']
