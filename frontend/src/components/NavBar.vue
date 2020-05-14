@@ -29,6 +29,12 @@
           :to="{ name: 'Login' }"
           >Login</router-link
         >
+        <router-link
+                v-if="isLoggedIn"
+                class="nav-item nav-main"
+                :to="{ name: 'Profile' }"
+        >Profile</router-link
+        >
       </div>
       <v-btn
         rounded

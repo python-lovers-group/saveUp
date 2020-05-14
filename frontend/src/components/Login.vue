@@ -92,7 +92,7 @@ export default {
             icon: "success",
             title: this.message
           });
-          this.$router.push({ name: "Home" });
+          this.$router.push({ name: "Profile" });
         })
         .catch(err => {
           window.Swal.fire({
