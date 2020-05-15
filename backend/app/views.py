@@ -59,10 +59,9 @@ class BillViewSet(viewsets.ModelViewSet):
             Response(status=status.HTTP_400_BAD_REQUEST)
         queryset = self.queryset.filter(billing=user_billing)
 
-        categories = self.request.query_params.get('categories')
-        if categories:
-            categories_ids = self.__params_to_ints(categories)
-            queryset = queryset.filter(categories__id__in=categories_ids)
+        user_categories = Category.objects.get(user=self.request.user)
+        if user_categories:
+            queryset = queryset.filter(categories=user_categories)
 
         where = self.request.query_params.get('where')
         if where:
@@ -113,9 +112,10 @@ class BillViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         """Create a new object"""
         user_billing = Billing.objects.get(user=self.request.user)
+        user_categories = Category.objects.filter(user=self.request.user)
         if not user_billing:
             Response(status=status.HTTP_400_BAD_REQUEST)
-        serializer.save(billing=user_billing)
+        serializer.save(billing=user_billing, categories=user_categories)
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -141,4 +141,3 @@ class CategoryViewSet(viewsets.ModelViewSet):
         bills_queryset = Bill.objects.filter(categories__name__contains=category)
         list_of_bills = BillSerializer(bills_queryset, many=True).data
         return Response(list_of_bills)
-
