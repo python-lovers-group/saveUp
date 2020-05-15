@@ -4,6 +4,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
+from django.shortcuts import get_object_or_404
 
 import datetime
 
@@ -93,6 +94,7 @@ class BillViewSet(viewsets.ModelViewSet):
 
     @action(detail=False)
     def summarise(self, request, *args, **kwargs):
+        """Summarise bills in selected time range"""
         from_date = self.request.query_params.get('from_date')
         to_date = self.request.query_params.get('to_date')
         if from_date and to_date:
@@ -117,7 +119,12 @@ class BillViewSet(viewsets.ModelViewSet):
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
-    """Manage Categories in the database"""
+    """
+    Manage Categories in the database
+
+    To return user bills having selected category add "/select_category/?category=YOUR_CATEGORY"
+    i.e. "/select_category/?category=food"
+    """
 
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
@@ -126,3 +133,12 @@ class CategoryViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return Category.objects.filter(user=self.request.user)
+
+    @action(detail=False)
+    def select_category(self, request, *args, **kwargs):
+        """Return user bills having selected category"""
+        category = self.request.query_params.get('category')
+        bills_queryset = Bill.objects.filter(categories__name__contains=category)
+        list_of_bills = BillSerializer(bills_queryset, many=True).data
+        return Response(list_of_bills)
+
