@@ -1,11 +1,6 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-light">
-    <img
-      class="navbar-brand ml-5"
-      style="cursor: pointer"
-      @click="reconnectToHome"
-      src="../assets/svgs/logo.svg"
-    />
+    <Logo />
     <v-spacer></v-spacer>
     <v-spacer></v-spacer>
     <button
@@ -60,14 +55,12 @@
 
 <script>
 import { mapGetters } from "vuex";
+import Logo from "../components/Logo";
 
 export default {
   name: "NavBar",
+  components: {Logo},
   methods: {
-    reconnectToHome() {
-      this.$router.push({ name: "Home" });
-    },
-
     logout() {
       window.Swal.fire({
         title: "Are you sure?",
