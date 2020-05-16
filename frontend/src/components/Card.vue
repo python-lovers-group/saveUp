@@ -4,7 +4,7 @@
       <h4 class="text-white text-center text-capitalize title">{{title}}</h4>
     </div>
     <div class="card-body text-center">
-      <h2 class="font-weight-bold display-1">{{value}}</h2>
+      <h2 class="font-weight-bold display-1">${{value}}</h2>
     </div>
   </div>
 </template>
