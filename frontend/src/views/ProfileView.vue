@@ -12,19 +12,19 @@
         <v-col cols="12" md="3">
           <span class="font-weight-bold title">{{user.username}}</span>
           <br>
-          <span class="subtitle-2 text-secondary">{{user.email}}</span>
+          <span class="subtitle-2 text-secondary">{{user.email}} {{billing}}</span>
         </v-col>
       </v-row>
       <v-row>
         <v-col cols="12" md="1"></v-col>
         <v-col cols="12" md="3">
-          <Card title="My Balance" value="$821.47" />
+          <Card title="My Balance" :value="billing[0].total_bills" />
         </v-col>
         <v-col cols="12" md="3">
-          <Card title="Total spent" value="$13.25" />
+          <Card title="Total spent" :value="dailyTotal" />
         </v-col>
         <v-col cols="12" md="3">
-          <Card title="Daily limit" value="$350" />
+          <Card title="Daily limit" :value="billing[0].limit" />
         </v-col>
       </v-row>
 
@@ -46,13 +46,13 @@
             <v-container>
               <v-row>
                 <v-col cols="12">
-                  <v-text-field label="Price*" required></v-text-field>
+                  <v-text-field v-model="price" label="Price*" :rules="priceRules" required></v-text-field>
                 </v-col>
                 <v-col cols="12">
-                  <v-text-field label="Description" required></v-text-field>
+                  <v-text-field v-model="description" label="Description" required></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6">
-                  <v-text-field label="Where" required></v-text-field>
+                  <v-text-field v-model="where" label="Where" required></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6">
                   <v-autocomplete
@@ -87,19 +87,69 @@
     components: {Card, Logo},
     data() {
       return {
+        price: null,
+        description: null,
+        where: null,
+        categories: [],
         dialog: false,
+        priceRules: [
+            value => !!value || "Price is required",
+            value => value > 0 || "Price cannot be equal to zero or negative."
+        ]
       }
+    },
+    beforeCreate() {
+      this.$store.dispatch("getBilling");
     },
     computed: {
       ...mapGetters({
         user: "getUser",
         loading: "loading",
-        message: "getMessage"
-      })
+        message: "getMessage",
+        billing: "billing",
+      }),
+
+      dailyTotal() {
+        return 100;
+      }
     },
     methods: {
+      clearForm() {
+        this.price = null;
+        this.description = null;
+        this.where = null;
+        this.categories = [];
+      },
+
       addBill() {
         this.dialog = false;
+        let price = this.price;
+        let description = this.description;
+        let where = this.where;
+        const data = {
+          price,
+          description,
+          where
+        };
+        this.$store
+        .dispatch("createBill", data)
+            .then(() => {
+              window.Toast.fire({
+                icon: "success",
+                title: this.message
+              });
+              this.$store.dispatch("getBilling");
+              this.clearForm();
+            })
+            .catch(err => {
+              window.Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: this.message,
+              });
+              this.clearForm();
+              console.log(err);
+            });
       }
     }
 

@@ -17,7 +17,8 @@ const state = {
   user: TOKEN ? JSON.parse(user) : {},
   loading: false,
   error: null,
-  message: null
+  message: null,
+  billing: null,
 };
 
 const saveUser = () => {
@@ -69,6 +70,10 @@ const mutations = {
     state.token = "";
     state.user = {};
     saveUser();
+  },
+
+  [types.SET_BILLING](state, payload) {
+    state.billing = payload;
   }
 };
 
@@ -152,6 +157,56 @@ const actions = {
 
   clearError({ commit }) {
     commit(types.CLEAR_ERROR);
+  },
+
+  getBilling({ commit }) {
+    commit(types.START_LOADING);
+    commit(types.CLEAR_MESSAGE);
+    commit(types.CLEAR_ERROR);
+
+    return new Promise((resolve, reject) => {
+      axios({
+        url: HEROKU_APP_API_URL + "api/billing/",
+        method: "GET"
+      })
+          .then(resp => {
+            commit(types.END_LOADING);
+            commit(types.SET_BILLING, resp.data);
+            resolve(resp);
+          })
+          .catch(err => {
+            commit(types.SET_ERROR, err);
+            commit(types.END_LOADING);
+            reject(err);
+          });
+    });
+  },
+
+  createBill({ commit }, payload) {
+    commit(types.START_LOADING);
+    commit(types.CLEAR_MESSAGE);
+    commit(types.CLEAR_ERROR);
+
+    console.log(payload);
+
+    return new Promise((resolve, reject) => {
+      axios({
+        url: HEROKU_APP_API_URL + "api/bills/",
+        data: payload,
+        method: "POST"
+      })
+          .then(resp => {
+            commit(types.END_LOADING);
+            commit(types.SET_MESSAGE, "You have created a new bill!");
+            resolve(resp);
+          })
+          .catch(err => {
+            commit(types.SET_MESSAGE, "Unfortunately, something gone wrong!");
+            commit(types.SET_ERROR, err);
+            commit(types.END_LOADING);
+            reject(err);
+          });
+    });
   }
 };
 const getters = {
@@ -160,7 +215,8 @@ const getters = {
   getUser: state => state.user,
   loading: state => state.loading,
   getError: state => state.error,
-  getMessage: state => state.message
+  getMessage: state => state.message,
+  billing: state => state.billing,
 };
 
 export default new Vuex.Store({
