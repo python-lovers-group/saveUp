@@ -129,7 +129,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     authentication_classes = (authentication.TokenAuthentication,)
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated,]
 
     def get_queryset(self):
         return Category.objects.filter(user=self.request.user)
