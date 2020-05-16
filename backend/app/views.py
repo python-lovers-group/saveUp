@@ -59,9 +59,10 @@ class BillViewSet(viewsets.ModelViewSet):
             Response(status=status.HTTP_400_BAD_REQUEST)
         queryset = self.queryset.filter(billing=user_billing)
 
-        user_categories = Category.objects.get(user=self.request.user)
-        if user_categories:
-            queryset = queryset.filter(categories=user_categories)
+        # user_categories = Category.objects.get(user=self.request.user)
+        # print(user_categories)
+        # if user_categories:
+        #     queryset = queryset.filter(categories=user_categories)
 
         where = self.request.query_params.get('where')
         if where:
@@ -129,10 +130,10 @@ class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     authentication_classes = (authentication.TokenAuthentication,)
-    permission_classes = [IsAuthenticated,]
+    permission_classes = [IsAuthenticated, IsOwner,]
 
-    def get_queryset(self):
-        return Category.objects.filter(user=self.request.user)
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
     @action(detail=False)
     def select_category(self, request, *args, **kwargs):

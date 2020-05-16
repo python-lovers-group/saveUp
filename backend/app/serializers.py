@@ -12,8 +12,8 @@ class CategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Category
-        fields = ('id', 'name')
-        read_only_fields = ('id',)
+        fields = ('id', 'name', 'user')
+        read_only_fields = ('id', 'user')
 
 
 class BillSerializer(serializers.ModelSerializer):
