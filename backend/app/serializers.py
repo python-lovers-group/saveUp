@@ -1,3 +1,4 @@
+from django.db.models import Prefetch
 from rest_framework import serializers
 from app.models import (
     Bill,
@@ -16,10 +17,19 @@ class CategorySerializer(serializers.ModelSerializer):
         read_only_fields = ('id', 'user')
 
 
+class CategoryField(serializers.PrimaryKeyRelatedField):
+    """Category field for BillSerializer"""
+
+    def get_queryset(self):
+        user = self.context['request'].user
+        queryset = Category.objects.filter(user=user)
+        return queryset
+
+
 class BillSerializer(serializers.ModelSerializer):
     """Serializer for Bill objects"""
 
-    categories = serializers.PrimaryKeyRelatedField(many=True, queryset=Category.objects.all())
+    categories = CategoryField(many=True)
 
     class Meta:
         model = Bill

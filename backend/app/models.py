@@ -19,7 +19,7 @@ class Category(models.Model):
         verbose_name = "category"
 
     def __str__(self):
-        return f"<Category: {self.name}>"
+        return f"<Category: {self.name}, by {self.user}>"
 
 
 class Billing(models.Model):

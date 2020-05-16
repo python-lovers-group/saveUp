@@ -58,12 +58,8 @@ class BillViewSet(viewsets.ModelViewSet):
         if not user_billing:
             Response(status=status.HTTP_400_BAD_REQUEST)
 
-        queryset = self.queryset.filter(billing=user_billing).prefetch_related(Prefetch(
-            'bill__categories',
-            queryset=Category.objects.filter(
-                user=self.request.user,
-            ),
-        ))
+        queryset = Bill.objects.filter(billing=user_billing)
+
         where = self.request.query_params.get('where')
         if where:
             queryset = queryset.filter(where=where)
@@ -90,7 +86,6 @@ class BillViewSet(viewsets.ModelViewSet):
             day = datetime.datetime.strptime(day_str, "%d").day
             queryset = self.queryset.filter(created_at__day=day)
 
-        print(queryset)
         return queryset
 
     @action(detail=False)
@@ -114,10 +109,9 @@ class BillViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         """Create a new object"""
         user_billing = Billing.objects.get(user=self.request.user)
-        user_categories = Category.objects.filter(user=self.request.user)
         if not user_billing:
             Response(status=status.HTTP_400_BAD_REQUEST)
-        serializer.save(billing=user_billing, categories=user_categories)
+        serializer.save(billing=user_billing)
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
