@@ -19,7 +19,7 @@ from app.serializers import (
     CategorySerializer
 )
 
-from django.db.models import Sum
+from django.db.models import Sum, Prefetch
 
 from app.permissions import IsOwner
 
@@ -57,12 +57,13 @@ class BillViewSet(viewsets.ModelViewSet):
         user_billing = Billing.objects.get(user=self.request.user)
         if not user_billing:
             Response(status=status.HTTP_400_BAD_REQUEST)
-        queryset = self.queryset.filter(billing=user_billing)
 
-        user_categories = Category.objects.get(user=self.request.user)
-        if user_categories:
-            queryset = queryset.filter(categories=user_categories)
-
+        queryset = self.queryset.filter(billing=user_billing).prefetch_related(Prefetch(
+            'bill__categories',
+            queryset=Category.objects.filter(
+                user=self.request.user,
+            ),
+        ))
         where = self.request.query_params.get('where')
         if where:
             queryset = queryset.filter(where=where)
@@ -89,6 +90,7 @@ class BillViewSet(viewsets.ModelViewSet):
             day = datetime.datetime.strptime(day_str, "%d").day
             queryset = self.queryset.filter(created_at__day=day)
 
+        print(queryset)
         return queryset
 
     @action(detail=False)
@@ -129,10 +131,14 @@ class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     authentication_classes = (authentication.TokenAuthentication,)
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsOwner, ]
 
-    def get_queryset(self):
-        return Category.objects.filter(user=self.request.user)
+    def get_queryset(self):  # ensures proper user serialization
+        user = self.request.user
+        return Category.objects.filter(user=user)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
     @action(detail=False)
     def select_category(self, request, *args, **kwargs):
