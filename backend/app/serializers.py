@@ -20,15 +20,14 @@ class CategorySerializer(serializers.ModelSerializer):
 class CategoryField(serializers.PrimaryKeyRelatedField):
     """Category field for BillSerializer"""
 
-    class GenreRelatedField(serializers.RelatedField):
-        def display_value(self, instance):
-            return instance
+    def display_value(self, instance):
+        return instance
 
-        def to_representation(self, value):
-            return value.name
+    def to_representation(self, value):
+        return value.name
 
-        def to_internal_value(self, data):
-            return Category.objects.get(pk=data)
+    def to_internal_value(self, data):
+        return Category.objects.get(name=data)
 
     def get_queryset(self):
         user = self.context['request'].user
