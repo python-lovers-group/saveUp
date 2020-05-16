@@ -126,10 +126,12 @@
         let price = this.price;
         let description = this.description;
         let where = this.where;
+        let categories = this.categories;
         const data = {
           price,
           description,
-          where
+          where,
+          categories,
         };
         this.$store
         .dispatch("createBill", data)
