@@ -60,6 +60,10 @@ class BillViewSet(viewsets.ModelViewSet):
 
         queryset = Bill.objects.filter(billing=user_billing)
 
+        category = self.request.query_params.get('category')
+        if category:
+            queryset = queryset.filter(categories__name__contains=category)
+
         where = self.request.query_params.get('where')
         if where:
             queryset = queryset.filter(where=where)

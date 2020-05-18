@@ -27,12 +27,12 @@ def create_sample_bill(user, price=10, where='Sample Localization'):
                                where=where)
 
 
-def create_sample_category(name):
+def create_sample_category(name, user):
     """Create category or return if it existed"""
-    if Category.objects.filter(name=name).count():
+    if Category.objects.filter(name=name, user=user).count():
         return Category.objects.get(name=name)
     else:
-        return Category.objects.create(name=name)
+        return Category.objects.create(name=name, user=user)
 
 
 class BillApiTestUnauthorized(TestCase):
@@ -83,11 +83,11 @@ class BillApiTest(TestCase):
 
     def test_create_bill(self):
         """Test creating new Bill object."""
-        category = create_sample_category("test-category")
+        category = create_sample_category("TestCategory", self.user)
 
         payload = {
             "billing": get_users_billing(self.user),
-            "categories": category.id,
+            "categories": category.name,
             "price": 99,
             "where": "Test",
             "description": "test test"
@@ -102,11 +102,11 @@ class BillApiTest(TestCase):
     def test_create_bill_with_many_categories(self):
         """Test creating new Bill object with many categories."""
 
-        categories = [create_sample_category(name) for name in ["test-category1", "test-category2", "test-category3"]]
+        categories = [create_sample_category(name, self.user) for name in ["TestCategory1", "TestCategory2", "TestCategory3"]]
 
         payload = {
             "billing": get_users_billing(self.user),
-            "categories": [category.id for category in categories],
+            "categories": [category.name for category in categories],
             "price": 99,
             "where": "Test",
             "description": "test test"
@@ -119,8 +119,8 @@ class BillApiTest(TestCase):
 
     def test_filter_bills_by_category(self):
         """Test filtering Bills queryset by category."""
-        category1 = create_sample_category("TestCategory1")
-        category2 = create_sample_category("TestCategory2")
+        category1 = create_sample_category("TestCategory1", self.user)
+        category2 = create_sample_category("TestCategory2", self.user)
 
         bill1 = create_sample_bill(user=self.user)
         bill1.categories.add(category1)
@@ -133,7 +133,7 @@ class BillApiTest(TestCase):
         bill3.categories.add(category2)
 
         query = {
-            "categories": f"{category1.name}"
+            "category": f"{category1.name}"
         }
         response = self.client.get(BILL_URL, query)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
