@@ -20,7 +20,7 @@ def get_users_billing(user):
     return Billing.objects.get(user=user)
 
 
-def create_sample_bill(user, price=10, where='Sample Localization'):
+def create_sample_bill(user, price=10, where='SampleLocalization'):
     """Create and return sample Bill."""
     return Bill.objects.create(billing=get_users_billing(user),
                                price=price,

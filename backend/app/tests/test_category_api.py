@@ -5,14 +5,16 @@ from rest_framework import status
 from rest_framework.test import APIClient
 
 from app.models import Category, Bill, Billing
-from app.serializers import CategorySerializer
-
+from app.serializers import CategorySerializer, BillSerializer
 
 CATEGORY_URL = "/api/categories/"
+SELECT_CATEGORY_URL = CATEGORY_URL + "select_category/"
+
 
 def get_detail_url(category):
     """Return detail url for bill."""
     return CATEGORY_URL + str(category.id) + "/"
+
 
 def get_users_billing(user):
     """Return User's billing."""
@@ -27,11 +29,18 @@ def create_sample_category(name, user):
         return Category.objects.create(name=name, user=user)
 
 
-def create_sample_bill(user, price=10, where='Sample Localization'):
+def create_sample_bill(user, category_name=0, price=10, where='SampleLocalization'):
     """Create and return sample Bill."""
-    return Bill.objects.create(billing=get_users_billing(user),
+
+    bill = Bill.objects.create(billing=get_users_billing(user),
                                price=price,
                                where=where)
+
+    if category_name:
+        category_name = Category.objects.get(user=user, name=category_name)
+        bill.categories.add(category_name)
+
+    return bill
 
 
 class CategoryApiTestUnauthorized(TestCase):
@@ -94,3 +103,23 @@ class CategoryApiTest(TestCase):
         category = Category.objects.get(id=response.data.get("id"))
         serializer = CategorySerializer(category)
         self.assertEqual(response.data, serializer.data)
+
+    def test_select_category(self):
+        """Test selecting category and returning bills with this one"""
+
+        category1 = create_sample_category("TestCategoryA", self.user)
+        category2 = create_sample_category("TestCategoryB", self.user)
+
+        response = self.client.get(CATEGORY_URL)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        bill1 = create_sample_bill(self.user, category_name=category1.name)
+        bill2 = create_sample_bill(self.user, category_name=category1.name)
+        bill3 = create_sample_bill(self.user, category_name=category2.name)
+
+        serializers_dicts = [BillSerializer(bill).data for bill in [bill1, bill2, bill3]]
+
+        payload = {"category": category1.name}
+        response = self.client.get(SELECT_CATEGORY_URL, payload)
+        self.assertEqual(len(response.data), len(
+            [serializer for serializer in serializers_dicts if category1.name in serializer['categories']]))
