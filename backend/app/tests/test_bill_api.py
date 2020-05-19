@@ -102,7 +102,8 @@ class BillApiTest(TestCase):
     def test_create_bill_with_many_categories(self):
         """Test creating new Bill object with many categories."""
 
-        categories = [create_sample_category(name, self.user) for name in ["TestCategory1", "TestCategory2", "TestCategory3"]]
+        categories = [create_sample_category(name, self.user) for name in
+                      ["TestCategory1", "TestCategory2", "TestCategory3"]]
 
         payload = {
             "billing": get_users_billing(self.user),
@@ -140,3 +141,20 @@ class BillApiTest(TestCase):
 
         bills = Bill.objects.filter(categories__name__contains=category1.name)
         self.assertEqual(len(response.data), len(bills))
+
+    def test_represent_category_in_bill_as_name(self):
+        """Test representing category as name in Bill"""
+        category = create_sample_category("TestCategory1", self.user)
+
+        payload = {
+            "billing": get_users_billing(self.user),
+            "categories": category.name,
+            "price": 99,
+            "where": "Test",
+            "description": "test test"
+        }
+        response = self.client.post(BILL_URL, payload)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        bill = Bill.objects.get(id=response.data.get("id"))
+        serializer = BillSerializer(bill)
+        self.assertEqual(serializer.data['categories'][0], category.name)
