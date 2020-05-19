@@ -16,6 +16,11 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'user')
         read_only_fields = ('id', 'user')
 
+    def validate_name(self, value):
+        if len(value) < 3:
+            raise serializers.ValidationError("Category name length must be greater than 3.")
+        return value
+
 
 class CategoryField(serializers.PrimaryKeyRelatedField):
     """Category field for BillSerializer"""
