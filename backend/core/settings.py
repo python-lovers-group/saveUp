@@ -153,3 +153,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 django_heroku.settings(locals())
+
+# Admin customization
+JET_SIDE_MENU_COMPACT = True
