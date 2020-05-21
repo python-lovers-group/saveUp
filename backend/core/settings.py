@@ -156,3 +156,4 @@ django_heroku.settings(locals())
 
 # Admin customization
 JET_SIDE_MENU_COMPACT = True
+JET_DEFAULT_THEME = 'default'

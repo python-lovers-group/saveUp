@@ -4,7 +4,6 @@ from app.models import Billing, Bill, Category
 from app.serializers import BillSerializer
 
 admin.site.site_header = "saveUp admin page"
-admin.site.unregister(Group)
 
 
 class BillAdmin(admin.ModelAdmin):
@@ -34,6 +33,23 @@ class BillingAdmin(admin.ModelAdmin):
         return sum([bill.price for bill in Bill.objects.filter(billing=obj)])
 
 
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ('category_name', 'owner', 'bills_sum', 'bills_number')
+
+    def category_name(self, obj):
+        return obj.name
+
+    def owner(self, obj):
+        return obj.user
+
+    def bills_sum(self, obj):
+        return sum([bill.price for bill in Bill.objects.filter(billing__user=obj.user, categories__name__contains=obj.name)])
+
+    def bills_number(self, obj):
+        return len([bill for bill in Bill.objects.filter(categories__user=obj.user, categories__name__contains=obj.name)])
+
+
 admin.site.register(Bill, BillAdmin)
 admin.site.register(Billing, BillingAdmin)
-admin.site.register(Category)
+admin.site.register(Category, CategoryAdmin)
+admin.site.unregister(Group)
