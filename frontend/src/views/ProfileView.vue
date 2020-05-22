@@ -8,6 +8,7 @@
     <v-navigation-drawer
             v-model="sidebarMenu"
             color="#385F73"
+            hide-overlay
             app
             floating
             :permanent="sidebarMenu"
@@ -25,13 +26,13 @@
         </v-btn>
       </v-list-item>
 
-      <v-list>
+      <v-list dense>
         <v-list-item v-for="item in items" :key="item.title" link :to="item.href">
           <v-list-item-icon>
-            <v-icon dark>{{ item.icon }}</v-icon>
+            <v-icon dark v-text="item.icon"></v-icon>
           </v-list-item-icon>
           <v-list-item-content>
-            <v-list-item-title class="text-white">{{ item.title }}</v-list-item-title>
+            <v-list-item-title class="text-white" v-text="item.title"></v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -40,7 +41,7 @@
       <v-container fluid>
         <v-row class="fill-height">
           <v-col>
-            <transition name="fade">
+            <transition name="slide">
               <router-view></router-view>
             </transition>
           </v-col>
@@ -75,12 +76,28 @@
     beforeCreate() {
       this.$store.dispatch("getBilling");
     },
+    watch: {
+      message(value) {
+        window.Swal.fire({
+          icon: "success",
+          text: value
+        });
+      },
+
+      error(value) {
+        window.Swal.fire({
+          icon: "error",
+          text: value
+        });
+      }
+    },
     computed: {
       ...mapGetters({
         user: "getUser",
         loading: "loading",
         message: "getMessage",
         billing: "billing",
+        error: "getError",
       }),
 
       mini() {
@@ -91,9 +108,4 @@
 </script>
 
 <style scoped>
-.add-icon {
-  position: fixed;
-  bottom: 1rem;
-  right: 1rem;
-}
 </style>

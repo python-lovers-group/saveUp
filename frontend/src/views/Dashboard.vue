@@ -1,51 +1,61 @@
 <template>
   <v-container>
     <v-row>
-      <v-col :md="6" :sm="12" :xs="12">
-        <v-card
-                color="#385F73"
-                max-width="500px"
-                elevation="5"
-                dark
-        >
-          <v-card-title class="display-1 font-weight-bold justify-content-center">My ballance</v-card-title>
-
-          <div class="display-2 font-weight-medium text-center">
-            ${{billing.total_bills}}
-          </div>
-
-          <v-card-actions>
-            <v-btn class="overline" text>Details</v-btn>
-          </v-card-actions>
-        </v-card>
+      <v-col :md="4" :sm="12" :xs="12">
+        <Card>
+          <template v-slot:icon>
+            <v-btn class="mx-2 ml-4" fab dark color="teal">
+              <v-icon dark>mdi-cash-usd</v-icon>
+            </v-btn>
+          </template>
+          <template v-slot:content>
+            <span class="font-weight-light display-2 mr-2">$200</span><span class="headline font-weight-light">My Ballance</span>
+            <p class="font-weight-light">It's $20 below your limit!</p>
+          </template>
+        </Card>
       </v-col>
-      <v-col :md="6" :sm="12" :xs="12">
-        <v-card
-                color="#385F73"
-                max-width="500px"
-                elevation="5"
-                dark
-        >
-          <v-card-title class="display-1 font-weight-bold justify-content-center">Daily total</v-card-title>
-
-          <div class="display-2 font-weight-medium text-center">
-            ${{dailyTotal}}
-          </div>
-
-          <v-card-actions>
-            <v-btn class="overline" text>Details</v-btn>
-          </v-card-actions>
-        </v-card>
+      <v-col :md="4" :sm="12" :xs="12">
+        <Card>
+          <template v-slot:icon>
+            <v-btn class="mx-2 ml-4" fab dark color="teal">
+              <v-icon dark>mdi-cash-usd</v-icon>
+            </v-btn>
+          </template>
+          <template v-slot:content>
+            <span class="font-weight-light display-2 mr-2">$200</span><span class="headline font-weight-light">My Ballance</span>
+            <p class="font-weight-light">It's $20 below your limit!</p>
+          </template>
+        </Card>
       </v-col>
+      <v-col :md="4" :sm="12" :xs="12">
+        <Card>
+          <template v-slot:icon>
+            <v-btn class="mx-2 ml-4" fab dark color="teal">
+              <v-icon dark>mdi-cash-usd</v-icon>
+            </v-btn>
+          </template>
+          <template v-slot:content>
+            <span class="font-weight-light display-2 mr-2">$200</span><span class="headline font-weight-light">My Ballance</span>
+            <p class="font-weight-light">It's $20 below your limit!</p>
+          </template>
+        </Card>
+      </v-col>
+      <BillForm />
     </v-row>
   </v-container>
 </template>
 
 <script>
   import {mapGetters} from "vuex";
+  import BillForm from "../components/BillForm";
+  import Card from "../components/Card";
 
   export default {
     name: "Dashboard",
+    components: {Card, BillForm},
+    data: () => ({
+      dialog: false,
+    }),
     computed: {
       ...mapGetters({
         user: "getUser",
@@ -54,15 +64,9 @@
         billing: "billing",
       }),
 
-      dailyTotal() {
-        let result = 0;
-        this.billing.total_daily.forEach(item => result += item.price);
-        return result;
-      },
     },
   }
 </script>
 
 <style scoped>
-
 </style>
