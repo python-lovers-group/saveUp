@@ -29,6 +29,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'jet',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -44,6 +45,7 @@ INSTALLED_APPS = [
     # apps
     'user',
     'app',
+
 ]
 
 SITE_ID = 1
@@ -151,3 +153,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 django_heroku.settings(locals())
+
+# Admin customization
+JET_SIDE_MENU_COMPACT = True
+JET_DEFAULT_THEME = 'default'
