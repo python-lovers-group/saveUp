@@ -5,6 +5,7 @@ import About from "../views/About.vue";
 import LoginView from "../views/LoginView.vue";
 import RegisterView from "../views/RegisterView";
 import ProfileView from "../views/ProfileView";
+import Dashboard from "../views/Dashboard";
 import store from "../store/index";
 
 Vue.use(VueRouter);
@@ -37,7 +38,14 @@ const routes = [
     component: ProfileView,
     meta: {
       requiresAuth: true
-    }
+    },
+    children: [
+      {
+        path: "/",
+        name: "Dashboard",
+        component: Dashboard
+      }
+    ]
   },
   {
     path: "/about",

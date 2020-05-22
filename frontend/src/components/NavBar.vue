@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-light">
+  <nav class="navbar navbar-expand-lg navbar-light" style="background-color: white">
     <Logo />
     <v-spacer></v-spacer>
     <v-spacer></v-spacer>

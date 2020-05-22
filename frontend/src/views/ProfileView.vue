@@ -1,101 +1,75 @@
 <template>
-  <v-content>
-    <v-container fluid class="header-container">
-      <v-row>
-        <v-spacer></v-spacer>
-        <v-col cols="12" md="3">
-          <Logo />
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="12" md="1"></v-col>
-        <v-col cols="12" md="3">
-          <span class="font-weight-bold title">{{user.username}}</span>
-          <br>
-          <span class="subtitle-2 text-secondary">{{user.email}} {{billing}}</span>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="12" md="1"></v-col>
-        <v-col cols="12" md="3">
-          <Card title="My Balance" :value="billing[0].total_bills" />
-        </v-col>
-        <v-col cols="12" md="3">
-          <Card title="Total spent" :value="dailyTotal" />
-        </v-col>
-        <v-col cols="12" md="3">
-          <Card title="Daily limit" :value="billing[0].limit" />
-        </v-col>
-      </v-row>
+  <v-app>
+    <v-app-bar app color="#02c39a" dark elevation="0">
+      <v-app-bar-nav-icon @click.stop="sidebarMenu = !sidebarMenu"></v-app-bar-nav-icon>
+      <v-spacer></v-spacer>
+      <v-icon>mdi-account</v-icon>
+    </v-app-bar>
+    <v-navigation-drawer
+            v-model="sidebarMenu"
+            color="#385F73"
+            app
+            floating
+            :permanent="sidebarMenu"
+            :mini-variant.sync="mini"
+    >
+      <v-list-item class="px-2" @click="toggleMini = !toggleMini">
+        <v-list-item-avatar>
+          <v-icon dark>mdi-account-outline</v-icon>
+        </v-list-item-avatar>
+        <v-list-item-content class="text-white">
+          {{user.username}}
+        </v-list-item-content>
+        <v-btn icon small>
+          <v-icon dark color="white">mdi-chevron-left</v-icon>
+        </v-btn>
+      </v-list-item>
 
-    </v-container>
+      <v-list>
+        <v-list-item v-for="item in items" :key="item.title" link :to="item.href">
+          <v-list-item-icon>
+            <v-icon dark>{{ item.icon }}</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title class="text-white">{{ item.title }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
+    <v-content>
+      <v-container fluid>
+        <v-row class="fill-height">
+          <v-col>
+            <transition name="fade">
+              <router-view></router-view>
+            </transition>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-content>
+    <v-footer>
+      Footer
+    </v-footer>
 
-
-    <v-row justify="center">
-      <v-dialog v-model="dialog" persistent max-width="600px">
-        <template v-slot:activator="{ on }">
-          <v-btn class="mx-2 add-icon" fab dark color="#02C39A" v-on="on">
-            <v-icon dark>mdi-plus</v-icon>
-          </v-btn>
-        </template>
-        <v-card>
-          <v-card-title>
-            <span class="headline">Add new bill</span>
-          </v-card-title>
-          <v-card-text>
-            <v-container>
-              <v-row>
-                <v-col cols="12">
-                  <v-text-field v-model="price" label="Price*" :rules="priceRules" required></v-text-field>
-                </v-col>
-                <v-col cols="12">
-                  <v-text-field v-model="description" label="Description" required></v-text-field>
-                </v-col>
-                <v-col cols="12" sm="6">
-                  <v-text-field v-model="where" label="Where" required></v-text-field>
-                </v-col>
-                <v-col cols="12" sm="6">
-                  <v-autocomplete
-                          :items="['Skiing', 'Ice hockey', 'Soccer', 'Basketball', 'Hockey', 'Reading', 'Writing', 'Coding', 'Basejump']"
-                          label="Categories"
-                          multiple
-                  ></v-autocomplete>
-                </v-col>
-              </v-row>
-            </v-container>
-            <small>*indicates required field</small>
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
-            <v-btn rounded color="#02C39A" elevation="3" dark text @click="addBill">Save</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-    </v-row>
-
-  </v-content>
+  </v-app>
 </template>
 
 <script>
   import {mapGetters} from "vuex";
-  import Card from "../components/Card";
-  import Logo from "../components/Logo";
-
   export default {
     name: "ProfileView",
-    components: {Card, Logo},
     data() {
       return {
-        price: null,
-        description: null,
-        where: null,
-        categories: [],
-        dialog: false,
-        priceRules: [
-            value => !!value || "Price is required",
-            value => value > 0 || "Price cannot be equal to zero or negative."
-        ]
+        sidebarMenu: true,
+        toggleMini: false,
+        items: [
+          { title:"Dashboard", href:"/profile", icon:"mdi-home-outline" },
+          { title:"Detections", href:"/detections", icon:"mdi-shield-account" },
+          { title:"Components", href:"/comp", icon:"mdi-palette-swatch" },
+          { title:"Customers", href:"/customers", icon:"mdi-account" },
+          { title:"Orders", href:"/orders", icon:"mdi-bus-clock" },
+          { title:"Settings", href:"/settings", icon:"mdi-settings-outline" },
+        ],
       }
     },
     beforeCreate() {
@@ -109,52 +83,10 @@
         billing: "billing",
       }),
 
-      dailyTotal() {
-        return 100;
-      }
-    },
-    methods: {
-      clearForm() {
-        this.price = null;
-        this.description = null;
-        this.where = null;
-        this.categories = [];
+      mini() {
+        return (this.$vuetify.breakpoint.smAndDown) || this.toggleMini
       },
-
-      addBill() {
-        this.dialog = false;
-        let price = this.price;
-        let description = this.description;
-        let where = this.where;
-        let categories = this.categories;
-        const data = {
-          price,
-          description,
-          where,
-          categories,
-        };
-        this.$store
-        .dispatch("createBill", data)
-            .then(() => {
-              window.Toast.fire({
-                icon: "success",
-                title: this.message
-              });
-              this.$store.dispatch("getBilling");
-              this.clearForm();
-            })
-            .catch(err => {
-              window.Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: this.message,
-              });
-              this.clearForm();
-              console.log(err);
-            });
-      }
-    }
-
+    },
   }
 </script>
 

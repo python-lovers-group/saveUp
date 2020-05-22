@@ -171,7 +171,7 @@ const actions = {
       })
           .then(resp => {
             commit(types.END_LOADING);
-            commit(types.SET_BILLING, resp.data);
+            commit(types.SET_BILLING, resp.data[0]);
             resolve(resp);
           })
           .catch(err => {
