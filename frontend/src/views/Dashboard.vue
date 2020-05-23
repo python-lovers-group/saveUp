@@ -3,44 +3,58 @@
     <v-row>
       <v-col :md="4" :sm="12" :xs="12">
         <Card>
-          <template v-slot:icon>
-            <v-btn class="mx-2 ml-4" fab dark color="teal">
-              <v-icon dark>mdi-cash-usd</v-icon>
-            </v-btn>
-          </template>
-          <template v-slot:content>
-            <span class="font-weight-light display-2 mr-2">$200</span><span class="headline font-weight-light">My Ballance</span>
-            <p class="font-weight-light">It's $20 below your limit!</p>
-          </template>
+          <div class="pr-2">
+            <span class="font-weight-light display-2 mr-2">
+            ${{billing.total_bills}}
+            </span>
+            <span class="headline font-weight-light">
+              My Ballance
+            </span>
+            <p v-if="toLimit > 0" class="font-weight-light">It's ${{toLimit}} below your limit!</p>
+            <p v-else class="font-weight-light">It's ${{Math.abs(toLimit)}} above your limit!</p>
+          </div>
         </Card>
       </v-col>
       <v-col :md="4" :sm="12" :xs="12">
         <Card>
-          <template v-slot:icon>
-            <v-btn class="mx-2 ml-4" fab dark color="teal">
-              <v-icon dark>mdi-cash-usd</v-icon>
-            </v-btn>
-          </template>
-          <template v-slot:content>
-            <span class="font-weight-light display-2 mr-2">$200</span><span class="headline font-weight-light">My Ballance</span>
-            <p class="font-weight-light">It's $20 below your limit!</p>
-          </template>
+          <div class="pr-2">
+            <span class="font-weight-light display-2 mr-2">${{billing.limit}}</span><span class="headline font-weight-light">Limit</span>
+            <p class="font-weight-light">You can easily change your limit!</p>
+          </div>
         </Card>
       </v-col>
       <v-col :md="4" :sm="12" :xs="12">
         <Card>
-          <template v-slot:icon>
-            <v-btn class="mx-2 ml-4" fab dark color="teal">
-              <v-icon dark>mdi-cash-usd</v-icon>
-            </v-btn>
-          </template>
-          <template v-slot:content>
-            <span class="font-weight-light display-2 mr-2">$200</span><span class="headline font-weight-light">My Ballance</span>
-            <p class="font-weight-light">It's $20 below your limit!</p>
-          </template>
+          <div class="pr-2">
+            <span class="font-weight-light display-2 mr-2">${{dailyTotal}}</span><span class="headline font-weight-light">Daily total</span>
+            <p class="font-weight-light">Your daily total expenses!</p>
+          </div>
         </Card>
       </v-col>
       <BillForm />
+    </v-row>
+    <v-row justify="center">
+      <v-col :md="4" :sm="12">
+        <Card>
+          <div class="p-2">
+            <v-img src="../assets/svgs/main-banner.svg"></v-img>
+          </div>
+        </Card>
+      </v-col>
+      <v-col :md="4" :sm="12">
+        <Card>
+          <div class="p-2">
+            <v-img src="../assets/svgs/main-banner.svg"></v-img>
+          </div>
+        </Card>
+      </v-col>
+      <v-col :md="4" :sm="12">
+        <Card>
+          <div class="p-2">
+            <v-img src="../assets/svgs/main-banner.svg"></v-img>
+          </div>
+        </Card>
+      </v-col>
     </v-row>
   </v-container>
 </template>
@@ -63,7 +77,16 @@
         message: "getMessage",
         billing: "billing",
       }),
+      toLimit() {
+        return this.billing.limit - this.billing.total_bills;
+      },
 
+      dailyTotal() {
+        if(!this.billing.total_daily) return 0;
+        let result = 0;
+        this.billing.total_daily.forEach(bill => result += bill.price);
+        return result;
+      }
     },
   }
 </script>

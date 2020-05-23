@@ -8,12 +8,9 @@
             dark
     >
       <v-row class="align-center">
-        <v-col cols="2">
-          <slot name="icon"></slot>
-        </v-col>
-        <v-col cols="9">
-          <div class="pt-3 pl-3 pr-3 pb-1">
-            <slot name="content"></slot>
+        <v-col cols="12">
+          <div class="ml-5">
+            <slot></slot>
           </div>
         </v-col>
       </v-row>
