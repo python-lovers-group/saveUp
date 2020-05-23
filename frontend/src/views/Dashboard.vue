@@ -39,21 +39,21 @@
             <v-col :md="4" :sm="12">
                 <Card>
                     <div class="p-2">
-                        <TimeChart/>
+                        <LineChart/>
                     </div>
                 </Card>
             </v-col>
             <v-col :md="4" :sm="12">
                 <Card>
                     <div class="p-2">
-                        <CategoriesChart/>
+                        <PieChart/>
                     </div>
                 </Card>
             </v-col>
             <v-col :md="4" :sm="12">
                 <Card>
                     <div class="p-2">
-                        <PlaceChart />
+                        <BarChart />
                     </div>
                 </Card>
             </v-col>
@@ -65,13 +65,13 @@
     import {mapGetters} from "vuex";
     import BillForm from "../components/BillForm";
     import Card from "../components/Card";
-    import TimeChart from "../components/TimeChart";
-    import CategoriesChart from "../components/CategoriesChart";
-    import PlaceChart from "../components/PlaceChart";
+    import LineChart from "../components/TimeChart";
+    import PieChart from "../components/CategoryChart";
+    import BarChart from "../components/PlaceChart";
 
     export default {
         name: "Dashboard",
-        components: {Card, BillForm, TimeChart, CategoriesChart, PlaceChart},
+        components: {Card, BillForm, PieChart, BarChart, LineChart},
         data: () => ({
             dialog: false,
         }),
