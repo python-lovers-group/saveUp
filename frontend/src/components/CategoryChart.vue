@@ -41,8 +41,8 @@
             }
         },
         mounted() {
-            this.fillData()
-            this.renderChart(this.datacollection, this.options)
+            this.fillData();
+            this.renderChart(this.datacollection, this.options);
         }
     }
 </script>
