@@ -19,6 +19,8 @@ const state = {
   error: null,
   message: null,
   billing: null,
+  bills: null,
+  categories: null
 };
 
 const saveUser = () => {
@@ -74,6 +76,14 @@ const mutations = {
 
   [types.SET_BILLING](state, payload) {
     state.billing = payload;
+  },
+
+  [types.SET_BILLS](state, payload) {
+    state.bills = payload;
+  },
+
+  [types.SET_CATEGORIES](state, payload) {
+    state.categories = payload;
   }
 };
 
@@ -169,16 +179,16 @@ const actions = {
         url: HEROKU_APP_API_URL + "api/billing/",
         method: "GET"
       })
-          .then(resp => {
-            commit(types.END_LOADING);
-            commit(types.SET_BILLING, resp.data[0]);
-            resolve(resp);
-          })
-          .catch(err => {
-            commit(types.SET_ERROR, err);
-            commit(types.END_LOADING);
-            reject(err);
-          });
+        .then(resp => {
+          commit(types.END_LOADING);
+          commit(types.SET_BILLING, resp.data[0]);
+          resolve(resp);
+        })
+        .catch(err => {
+          commit(types.SET_ERROR, err);
+          commit(types.END_LOADING);
+          reject(err);
+        });
     });
   },
 
@@ -195,17 +205,63 @@ const actions = {
         data: payload,
         method: "POST"
       })
-          .then(resp => {
-            commit(types.END_LOADING);
-            commit(types.SET_MESSAGE, "You have created a new bill!");
-            resolve(resp);
-          })
-          .catch(err => {
-            commit(types.SET_MESSAGE, "Unfortunately, something gone wrong!");
-            commit(types.SET_ERROR, err);
-            commit(types.END_LOADING);
-            reject(err);
-          });
+        .then(resp => {
+          commit(types.END_LOADING);
+          commit(types.SET_MESSAGE, "You have created a new bill!");
+          resolve(resp);
+        })
+        .catch(err => {
+          commit(types.SET_MESSAGE, "Unfortunately, something gone wrong!");
+          commit(types.SET_ERROR, err);
+          commit(types.END_LOADING);
+          reject(err);
+        });
+    });
+  },
+
+  getBills({ commit }) {
+    commit(types.START_LOADING);
+    commit(types.CLEAR_MESSAGE);
+    commit(types.CLEAR_ERROR);
+
+    return new Promise((resolve, reject) => {
+      axios({
+        url: HEROKU_APP_API_URL + "api/bills/",
+        method: "GET"
+      })
+        .then(resp => {
+          commit(types.END_LOADING);
+          commit(types.SET_BILLS, resp.data[0]);
+          resolve(resp);
+        })
+        .catch(err => {
+          commit(types.SET_ERROR, err);
+          commit(types.END_LOADING);
+          reject(err);
+        });
+    });
+  },
+
+  getCategories({ commit }) {
+    commit(types.START_LOADING);
+    commit(types.CLEAR_MESSAGE);
+    commit(types.CLEAR_ERROR);
+
+    return new Promise((resolve, reject) => {
+      axios({
+        url: HEROKU_APP_API_URL + "api/categories/",
+        method: "GET"
+      })
+        .then(resp => {
+          commit(types.END_LOADING);
+          commit(types.SET_CATEGORIES, resp.data);
+          resolve(resp);
+        })
+        .catch(err => {
+          commit(types.SET_ERROR, err);
+          commit(types.END_LOADING);
+          reject(err);
+        });
     });
   }
 };
@@ -217,6 +273,7 @@ const getters = {
   getError: state => state.error,
   getMessage: state => state.message,
   billing: state => state.billing,
+  categories: state => state.categories
 };
 
 export default new Vuex.Store({

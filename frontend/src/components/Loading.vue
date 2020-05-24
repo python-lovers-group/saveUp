@@ -1,20 +1,18 @@
 <template>
-  
+  <div>Loading</div>
 </template>
 
 <script>
-  import {mapGetters} from "vuex";
+import { mapGetters } from "vuex";
 
-  export default {
-    name: "Loading",
-    computed: {
-      ...mapGetters({
-        loading: "loading",
-      }),
-    }
+export default {
+  name: "Loading",
+  computed: {
+    ...mapGetters({
+      loading: "loading"
+    })
   }
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
