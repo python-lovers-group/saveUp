@@ -4,12 +4,8 @@
             <v-col :md="4" :sm="12" :xs="12">
                 <Card>
                     <div class="pr-2">
-            <span class="font-weight-light display-2 mr-2">
-            ${{billing.total_bills}}
-            </span>
-                        <span class="headline font-weight-light">
-              My Ballance
-            </span>
+                        <span class="font-weight-light display-2 mr-2">${{billing.total_bills}}</span>
+                        <span class="headline font-weight-light">My Ballance</span>
                         <p v-if="toLimit > 0" class="font-weight-light">It's ${{toLimit}} below your limit!</p>
                         <p v-else class="font-weight-light">It's ${{Math.abs(toLimit)}} above your limit!</p>
                     </div>
@@ -18,8 +14,8 @@
             <v-col :md="4" :sm="12" :xs="12">
                 <Card>
                     <div class="pr-2">
-                        <span class="font-weight-light display-2 mr-2">${{billing.limit}}</span><span
-                            class="headline font-weight-light">Limit</span>
+                        <span class="font-weight-light display-2 mr-2">${{billing.limit}}</span>
+                        <span class="headline font-weight-light">Limit</span>
                         <p class="font-weight-light">You can easily change your limit!</p>
                     </div>
                 </Card>
@@ -27,8 +23,8 @@
             <v-col :md="4" :sm="12" :xs="12">
                 <Card>
                     <div class="pr-2">
-                        <span class="font-weight-light display-2 mr-2">${{dailyTotal}}</span><span
-                            class="headline font-weight-light">Daily total</span>
+                        <span class="font-weight-light display-2 mr-2">${{dailyTotal}}</span>
+                        <span class="headline font-weight-light">Daily total</span>
                         <p class="font-weight-light">Your daily total expenses!</p>
                     </div>
                 </Card>
@@ -46,14 +42,14 @@
             <v-col :md="4" :sm="12">
                 <Card>
                     <div class="p-2">
-                        <PieChart/>
+                        <BarChart/>
                     </div>
                 </Card>
             </v-col>
             <v-col :md="4" :sm="12">
                 <Card>
                     <div class="p-2">
-                        <BarChart />
+                        <PieChart/>
                     </div>
                 </Card>
             </v-col>
@@ -66,8 +62,8 @@
     import BillForm from "../components/BillForm";
     import Card from "../components/Card";
     import LineChart from "../components/TimeChart";
-    import PieChart from "../components/CategoryChart";
-    import BarChart from "../components/PlaceChart";
+    import PieChart from "../components/PlaceChart";
+    import BarChart from "../components/CategoriesChart";
 
     export default {
         name: "Dashboard",

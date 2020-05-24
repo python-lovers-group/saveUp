@@ -1,9 +1,8 @@
 <script>
-    import {Bar} from 'vue-chartjs'
+    import {Pie} from 'vue-chartjs'
 
     export default {
-        extends: Bar,
-        type: 'horizontalBar',
+        extends: Pie,
         data() {
             return {
                 datacollection: null
@@ -12,13 +11,15 @@
         methods: {
             fillData() {
                 this.datacollection = {
-                    labels: ['Krakow', 'Warszawa', 'Others'],
-                    datasets: [{
-                        indexLabelFontColor: "red",
-                        label: "Cities",
-                        data: [this.getRandomInt(), this.getRandomInt(), this.getRandomInt()],
-                        backgroundColor: ['#028090', '#00a896', '#02c39a']
-                    }],
+                    labels: ['Krakow', 'Warszawa', 'Other'],
+                    datasets: [
+                        {
+                            backgroundColor: [
+                                '#028090', '#00a896', '#02c39a'
+                            ],
+                            data: [this.getRandomInt(), this.getRandomInt(), this.getRandomInt()]
+                        },
+                    ],
                 };
                 this.options =
                     {
@@ -27,18 +28,6 @@
                             display: true,
                             fontColor: "#e5e5e5",
                             fontSize: 15
-                        },
-                        scales: {
-                            yAxes: [{
-                                ticks: {
-                                    fontColor: "#e5e5e5",
-                                }
-                            }],
-                            xAxes: [{
-                                ticks: {
-                                    fontColor: "#e5e5e5",
-                                }
-                            }]
                         },
                         legend: {
                             labels: {
