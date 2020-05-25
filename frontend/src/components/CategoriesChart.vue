@@ -18,7 +18,6 @@
             categoriesNames() {
                 let result = [];
                 this.categories.forEach(category => result.concat(category.name));
-                console.log(result)
                 return result;
             },
             categoriesTotals() {
