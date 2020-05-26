@@ -76,8 +76,7 @@
         },
         beforeCreate() {
             this.$store.dispatch("getBilling");
-            this.$store.dispatch("getCategories");
-
+            // this.$store.dispatch("getCategories");
         },
         watch: {
             message(value) {

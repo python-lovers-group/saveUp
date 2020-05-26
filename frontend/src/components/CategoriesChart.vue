@@ -12,17 +12,17 @@
         },
         computed: {
             ...mapGetters({
-                user: "getUser",
                 categories: "categories",
             }),
             categoriesNames() {
                 let result = [];
-                this.categories.forEach(category => result.concat(category.name));
+                this.categories.forEach(category => result.push(category.name));
                 return result;
             },
             categoriesTotals() {
                 let result = [];
-                this.categories.forEach(category => result.concat(category.category_total));
+                this.categories.forEach(category => result.push(category.category_total));
+                console.log(result);
                 return result;
             }
         },
