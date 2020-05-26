@@ -12,7 +12,7 @@ import Login from "../components/Login";
 import Footer from "../components/Footer";
 export default {
   name: "LoginView",
-  components: {Footer, Login, NavBar }
+  components: { Footer, Login, NavBar }
 };
 </script>
 

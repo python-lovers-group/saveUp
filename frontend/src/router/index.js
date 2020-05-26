@@ -69,7 +69,7 @@ router.beforeEach((to, from, next) => {
   } else if (requireAuth && !isLoggedIn) {
     next({ name: "Home" });
   } else if (onlyWithoutAuth && isLoggedIn) {
-    next( {name: "Home"} );
+    next({ name: "Home" });
   } else if (onlyWithoutAuth && !isLoggedIn) {
     next();
   } else {

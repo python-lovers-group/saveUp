@@ -12,7 +12,7 @@ import Register from "../components/Register";
 import Footer from "../components/Footer";
 export default {
   name: "RegisterView",
-  components: {Footer, Register, NavBar }
+  components: { Footer, Register, NavBar }
 };
 </script>
 

@@ -1,5 +1,8 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-light" style="background-color: white">
+  <nav
+    class="navbar navbar-expand-lg navbar-light"
+    style="background-color: white"
+  >
     <Logo />
     <v-spacer></v-spacer>
     <v-spacer></v-spacer>
@@ -25,10 +28,10 @@
           >Login</router-link
         >
         <router-link
-                v-if="isLoggedIn"
-                class="nav-item nav-main"
-                :to="{ name: 'Profile' }"
-        >Profile</router-link
+          v-if="isLoggedIn"
+          class="nav-item nav-main"
+          :to="{ name: 'Profile' }"
+          >Profile</router-link
         >
       </div>
       <v-btn
@@ -59,7 +62,7 @@ import Logo from "../components/Logo";
 
 export default {
   name: "NavBar",
-  components: {Logo},
+  components: { Logo },
   methods: {
     logout() {
       window.Swal.fire({

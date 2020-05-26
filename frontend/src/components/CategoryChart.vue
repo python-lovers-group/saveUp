@@ -11,7 +11,7 @@ export default {
   methods: {
     fillData() {
       this.datacollection = {
-        labels: ["Krakow", "Warszawa", "Other"],
+        labels: ["Food", "Health", "Other"],
         datasets: [
           {
             backgroundColor: ["#028090", "#00a896", "#02c39a"],
@@ -25,7 +25,7 @@ export default {
       };
       this.options = {
         title: {
-          text: "Places",
+          text: "Categories",
           display: true,
           fontColor: "#e5e5e5",
           fontSize: 15
