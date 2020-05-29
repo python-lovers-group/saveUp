@@ -6,7 +6,8 @@ import { types } from "./mutation-types";
 Vue.use(Vuex);
 
 // const AUTH_API_URL = "http://127.0.0.1:8100/accounts/";
-const HEROKU_APP_API_URL = "https://saveupyourmoney.herokuapp.com/";
+// const HEROKU_APP_API_URL = "https://saveupyourmoney.herokuapp.com/";
+const HEROKU_APP_API_URL = "http://127.0.0.1:8000/";
 
 const TOKEN = localStorage.getItem("token");
 let user = window.localStorage.getItem("user");
