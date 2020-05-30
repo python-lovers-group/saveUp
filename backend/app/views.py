@@ -143,5 +143,9 @@ class CategoryViewSet(viewsets.ModelViewSet):
         """Return user bills having selected category"""
         category = self.request.query_params.get('category')
         bills_queryset = Bill.objects.filter(categories__name__contains=category)
-        list_of_bills = BillSerializer(bills_queryset, many=True).data
-        return Response(list_of_bills)
+        custom_data = {
+            'list_of_bills': BillSerializer(bills_queryset, many=True).data,
+            'balance': bills_queryset.aggregate(Sum('price'))['price__sum'],
+        }
+
+        return Response(custom_data)

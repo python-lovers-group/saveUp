@@ -24,7 +24,7 @@ class Category(models.Model):
 
 class Billing(models.Model):
     """
-    Billing model receives all the user's billing informations.
+    Billing model receives all the user's billing information.
 
     Fields:
     user: User (FK)
@@ -90,3 +90,4 @@ def users_billing(sender, instance, created, **kwargs):
 
 
 post_save.connect(users_billing, sender=User)
+

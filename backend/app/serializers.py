@@ -11,15 +11,21 @@ from datetime import date
 class CategorySerializer(serializers.ModelSerializer):
     """Serializer for Category objects"""
 
+    category_total = serializers.SerializerMethodField()
+
     class Meta:
         model = Category
-        fields = ('id', 'name', 'user')
+        fields = ('id', 'name', 'user', 'category_total')
         read_only_fields = ('id', 'user')
 
     def validate_name(self, value):
         if len(value) < 3:
             raise serializers.ValidationError("Category name length must be greater than 3.")
         return value
+
+    def get_category_total(self, obj):
+        return sum(
+            [bill.price for bill in Bill.objects.filter(billing__user=obj.user, categories__name__contains=obj.name)])
 
 
 class CategoryField(serializers.PrimaryKeyRelatedField):
