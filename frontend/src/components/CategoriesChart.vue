@@ -14,14 +14,23 @@
             ...mapGetters({
                 categories: "categories",
             }),
+            usedCategories(){
+                function isUsed(category){
+                    if (category.category_total > 0) {
+                        return category
+                    }
+                }
+                let result = this.categories.filter(isUsed)
+                return result
+            },
             categoriesNames() {
-                let result = this.categories.map(category => {
+                let result = this.usedCategories.map(category => {
                     return category.name
                 })
                 return result
             },
             categoriesTotals() {
-                let result = this.categories.map(category => {
+                let result = this.usedCategories.map(category => {
                     return category.category_total
                 })
                 return result

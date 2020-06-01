@@ -13,28 +13,25 @@
             ...mapGetters({
                 billing: "billing",
             }),
-            // categoriesNames() {
-            //     let result = this.categories.map(category => {
-            //         return category.name
-            //     })
-            //     return result
-            // },
-            // categoriesTotals() {
-            //     let result = this.categories.map(category => {
-            //         return category.category_total
-            //     })
-            //     return result
-            // }
             lastThreeMonthsNames() {
                 const monthNames = ["January", "February", "March", "April", "May", "June",
-                    "July", "August", "September", "October", "November", "December" ];
-                let currentMonth = Date.now().getMonth();
-                console.log(currentMonth);
-
-                let monthsList = [monthNames[currentMonth - 2],monthNames[currentMonth - 1], monthNames[currentMonth]];
-                // console.log(monthsList);
+                    "July", "August", "September", "October", "November", "December"];
+                let currentDate = new Date();
+                let currentMonth = currentDate.getMonth();
+                let monthsList = [monthNames[currentMonth - 2], monthNames[currentMonth - 1], monthNames[currentMonth]];
                 return monthsList;
+            },
+            getThisMonthDailyBillsSum(monthName) {
+                function isFromThisMonth(bill) {
+                    if (bill.created_at.getMonth() == monthName) {
+                        return bill;
+                    }
+                }
+
+                let thisMonthBills = this.billing.bills.filter(isFromThisMonth);
+                let dailyBillsSum = Array(31).fill().map((x, i) => i);
             }
+
         },
         beforeCreate() {
             this.$store.dispatch("getBilling");
@@ -42,7 +39,7 @@
         methods: {
             fillData() {
                 this.datacollection = {
-                    labels: Array(31).fill().map((x, i) => i),
+                    labels: Array(31).fill().map((x, i) => i + 1),
                     datasets: [
                         {
                             label: this.lastThreeMonthsNames[0],
