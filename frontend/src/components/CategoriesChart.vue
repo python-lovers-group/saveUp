@@ -14,23 +14,32 @@
             ...mapGetters({
                 categories: "categories",
             }),
-            usedCategories(){
-                function isUsed(category){
+            categoriesToDisplay() {
+                function isUsed(category) {
                     if (category.category_total > 0) {
-                        return category
+                        return category;
                     }
                 }
-                let result = this.categories.filter(isUsed)
+
+                function compareCategories(a, b) {
+                    return b.category_total - a.category_total
+                }
+
+                let result = this.categories.filter(isUsed);
+                console.log(result);
+                if (result.length > 5) {
+                    result = result.sort(compareCategories).slice(0, 5)
+                }
                 return result
             },
             categoriesNames() {
-                let result = this.usedCategories.map(category => {
+                let result = this.categoriesToDisplay.map(category => {
                     return category.name
                 })
                 return result
             },
             categoriesTotals() {
-                let result = this.usedCategories.map(category => {
+                let result = this.categoriesToDisplay.map(category => {
                     return category.category_total
                 })
                 return result
@@ -46,7 +55,7 @@
                     datasets: [{
                         label: "Categories",
                         data: this.categoriesTotals,
-                        backgroundColor: ['#028090', '#00a896', '#02c39a']
+                        backgroundColor: ['#02c39a', '#028090', '#00a896', '#028090', '#00a896']
                     }],
                 };
                 this.options =

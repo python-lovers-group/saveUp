@@ -21,16 +21,16 @@
                 let monthsList = [monthNames[currentMonth - 2], monthNames[currentMonth - 1], monthNames[currentMonth]];
                 return monthsList;
             },
-            getThisMonthDailyBillsSum(monthName) {
-                function isFromThisMonth(bill) {
-                    if (bill.created_at.getMonth() == monthName) {
-                        return bill;
-                    }
-                }
-
-                let thisMonthBills = this.billing.bills.filter(isFromThisMonth);
-                let dailyBillsSum = Array(31).fill().map((x, i) => i);
-            }
+            // getThisMonthDailyBillsSum(monthName) {
+            //     function isFromThisMonth(bill) {
+            //         if (bill.created_at.getMonth() == monthName) {
+            //             return bill;
+            //         }
+            //     }
+            //
+            //     let thisMonthBills = this.billing.bills.filter(isFromThisMonth);
+            //     let dailyBillsSum = Array(31).fill().map((x, i) => i);
+            // }
 
         },
         beforeCreate() {
