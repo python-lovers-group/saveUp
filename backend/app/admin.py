@@ -43,10 +43,12 @@ class CategoryAdmin(admin.ModelAdmin):
         return obj.user
 
     def bills_sum(self, obj):
-        return sum([bill.price for bill in Bill.objects.filter(billing__user=obj.user, categories__name__contains=obj.name)])
+        return sum(
+            [bill.price for bill in Bill.objects.filter(billing__user=obj.user, categories__name__contains=obj.name)])
 
     def bills_number(self, obj):
-        return len([bill for bill in Bill.objects.filter(categories__user=obj.user, categories__name__contains=obj.name)])
+        return len(
+            [bill for bill in Bill.objects.filter(categories__user=obj.user, categories__name__contains=obj.name)])
 
 
 admin.site.register(Bill, BillAdmin)
