@@ -14,7 +14,7 @@
             ...mapGetters({
                 categories: "categories",
             }),
-            categoriesToDisplay() {
+            fiveMostImportantCategories() {
                 function isUsed(category) {
                     if (category.category_total > 0) {
                         return category;
@@ -26,20 +26,19 @@
                 }
 
                 let result = this.categories.filter(isUsed);
-                console.log(result);
                 if (result.length > 5) {
                     result = result.sort(compareCategories).slice(0, 5)
                 }
                 return result
             },
             categoriesNames() {
-                let result = this.categoriesToDisplay.map(category => {
+                let result = this.fiveMostImportantCategories.map(category => {
                     return category.name
                 })
                 return result
             },
             categoriesTotals() {
-                let result = this.categoriesToDisplay.map(category => {
+                let result = this.fiveMostImportantCategories.map(category => {
                     return category.category_total
                 })
                 return result

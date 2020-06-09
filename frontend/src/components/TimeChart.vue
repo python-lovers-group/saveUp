@@ -14,48 +14,68 @@
                 billing: "billing",
             }),
 
-            monthName(monthNumber) {
+            lastThreeMonthsNames() {
                 const monthNames = ["January", "February", "March", "April", "May", "June",
                     "July", "August", "September", "October", "November", "December"];
-                return monthNames[monthNumber];
+
+                let result = this.lastThreeMonthsNumbers.map(month => {
+                    return monthNames[month]
+                })
+                return result
             },
-
-            lastThreeMonthsNames() {
-
+            lastThreeMonthsNumbers() {
                 let currentDate = new Date();
                 let currentMonth = currentDate.getMonth();
                 let lastMonth = currentMonth - 1;
                 let lastButOneMonth = currentMonth - 2;
 
-                return [this.monthName[lastMonth], this.monthName[lastButOneMonth], this.monthName[currentMonth]];
+                return [lastButOneMonth, lastMonth, currentMonth];
             },
-            getThisMonthDailyBillsSum(monthNumber) {
-                function isFromThisMonth(bill) {
+            getMonthDailyBillsSum() {
+                function isFromThisMonth(monthNumber, bill) {
                     if (bill.created_at.getMonth() === monthNumber) {
                         return bill;
                     }
                 }
 
-                let thisMonthBills = this.billing.bills.filter(isFromThisMonth);
-                let dailyBillsSum = Array(31).fill().map((x, i) => {
+                function isFromThisDay(dayNumber, bill) {
+                    if (bill.created_at.getDay() === dayNumber) {
+                        return bill;
+                    }
+                }
 
-                });
+                function add(accumulator, a) {
+                    return accumulator + a;
+                }
+
+                function calcDailySum(monthNumber) {
+                    let thisMonthBills = this.billing.bills.filter(isFromThisMonth.bind(this, monthNumber));
+                    let dailyBillsSum = Array(31).fill().map((x, dayNumber) => {
+                        thisMonthBills.filter(isFromThisDay.bind(this, dayNumber)).reduce(add, 0);
+                    });
+                    return dailyBillsSum;
+                }
+
+                let result = this.lastThreeMonthsNumbers.map(monthNumber => calcDailySum(monthNumber));
+
+                console.log("OKKK");
+                return result;
             }
-
         },
         beforeCreate() {
             this.$store.dispatch("getBilling");
         },
         methods: {
             fillData() {
+
                 this.datacollection = {
-                    labels: Array(31).fill(31).map((x, i) => i + 1),
+                    labels: Array(31).fill().map((x, dayNumber) => dayNumber + 1),
                     datasets: [
                         {
                             label: this.lastThreeMonthsNames[0],
                             borderColor: "#028090",
                             data: [
-                                5, 6, 3
+                                this.getMonthDailyBillsSum[0]
                             ]
                         },
                         {
