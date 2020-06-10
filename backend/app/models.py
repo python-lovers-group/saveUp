@@ -90,4 +90,3 @@ def users_billing(sender, instance, created, **kwargs):
 
 
 post_save.connect(users_billing, sender=User)
-
