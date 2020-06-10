@@ -24,7 +24,7 @@ class Category(models.Model):
 
 class Billing(models.Model):
     """
-    Billing model receives all the user's billing informations.
+    Billing model receives all the user's billing information.
 
     Fields:
     user: User (FK)
@@ -84,9 +84,9 @@ class Bill(models.Model):
         return f"<Bill: {self.price}, {self.where}>"
 
 
-# def users_billing(sender, instance, created, **kwargs):
-#     if created:
-#         Billing.objects.create(user=instance)
-#
-#
-# post_save.connect(users_billing, sender=User)
+def users_billing(sender, instance, created, **kwargs):
+    if created:
+        Billing.objects.create(user=instance)
+
+
+post_save.connect(users_billing, sender=User)
