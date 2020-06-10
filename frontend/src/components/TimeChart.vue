@@ -32,33 +32,34 @@
                 return [lastButOneMonth, lastMonth, currentMonth];
             },
             getMonthDailyBillsSum() {
-                function isFromThisMonth(monthNumber, bill) {
-                    if (bill.created_at.getMonth() === monthNumber) {
+                function isFromThisMonth(bill) {
+                    let bill_date = new Date(bill.created_at);
+                    if (bill_date.getMonth() === this) {
                         return bill;
                     }
                 }
 
-                function isFromThisDay(dayNumber, bill) {
-                    if (bill.created_at.getDay() === dayNumber) {
+                function isToThisDay(bill) {
+                    let bill_date = new Date(bill.created_at);
+                    if (bill_date.getDay() <= this) {
                         return bill;
                     }
                 }
 
-                function add(accumulator, a) {
-                    return accumulator + a;
+                function add(accumulator, bill) {
+                    return accumulator + bill.price;
                 }
 
-                function calcDailySum(monthNumber) {
-                    let thisMonthBills = this.billing.bills.filter(isFromThisMonth.bind(this, monthNumber));
-                    let dailyBillsSum = Array(31).fill().map((x, dayNumber) => {
-                        thisMonthBills.filter(isFromThisDay.bind(this, dayNumber)).reduce(add, 0);
-                    });
+                function calcDailySum(monthNumber, billing) {
+                    let thisMonthBills = billing.bills.filter(isFromThisMonth, monthNumber);
+                    let dailyBillsSum = Array(31).fill().map((x, dayNumber) =>
+                        thisMonthBills.filter(isToThisDay, dayNumber).reduce(add, 0)
+                    );
                     return dailyBillsSum;
                 }
 
-                let result = this.lastThreeMonthsNumbers.map(monthNumber => calcDailySum(monthNumber));
-
-                console.log("OKKK");
+                let result = this.lastThreeMonthsNumbers.map(monthNumber =>
+                    calcDailySum(monthNumber, this.billing));
                 return result;
             }
         },
@@ -67,30 +68,26 @@
         },
         methods: {
             fillData() {
-
                 this.datacollection = {
                     labels: Array(31).fill().map((x, dayNumber) => dayNumber + 1),
                     datasets: [
                         {
                             label: this.lastThreeMonthsNames[0],
                             borderColor: "#028090",
-                            data: [
-                                this.getMonthDailyBillsSum[0]
-                            ]
+                            data: this.getMonthDailyBillsSum[0]
+
                         },
                         {
                             label: this.lastThreeMonthsNames[1],
                             borderColor: "#00a896",
-                            data: [
-                                3, 4, 5
-                            ]
+                            data: this.getMonthDailyBillsSum[1]
+
                         },
                         {
                             label: this.lastThreeMonthsNames[2],
                             borderColor: "#02c39a",
-                            data: [
-                                2, 3, 4
-                            ]
+                            data: this.getMonthDailyBillsSum[2]
+
                         }
                     ]
                 };

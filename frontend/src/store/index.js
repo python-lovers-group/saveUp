@@ -274,6 +274,7 @@ const getters = {
   getError: state => state.error,
   getMessage: state => state.message,
   billing: state => state.billing,
+  bills: state => state.bills,
   categories: state => state.categories
 };
 
