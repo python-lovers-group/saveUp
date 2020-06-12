@@ -13,7 +13,7 @@
             ...mapGetters({
                 billing: "billing",
             }),
-            places() {
+            groupedPlaces() {
                 let billsPlaces = this.billing.bills.map(function (bill) {
                     return {place: bill.where, price: bill.price}
                 });
@@ -26,54 +26,38 @@
                 return groupedPlaces;
             },
 
-            groupedPlacesPrice() {
-                // let dailyBillsSum = Array(31).fill().map((x, dayNumber) =>
-                //         thisMonthBills.filter(isToThisDay, dayNumber).reduce(add, 0)
-                //     );
+            sumPlacesPrice() {
+                function add(accumulator, place) {
+                    return accumulator + place.price;
+                }
 
-                // function add(accumulator, place) {
-                //     return accumulator + place.price;
-                // }
-
-                // console.log(this.places[Object.keys(this.places)[2]]);
-                // console.log(this.places[Object.keys(this.places)[2]].reduce(add, 0));
-
-                // let placePricesSum = Object.keys(this.places).map(function (place) {
-                //         return {
-                //             place: Object.keys(this.places)[place],
-                //             // price: Object.keys(this.places)[place].reduce(add, 0)
-                //         }
-                //     }
-                // );
-
-                // console.log(Object.keys(this.places).length);
-
-                let placePricesSum = Array(Object.keys(this.places).length).fill().map(function (placeNumber) {
-                        console.log(placeNumber)
-                        return {
-                            place: Object.keys(this.places)[placeNumber],
-                            // price: Object.keys(this.places)[place].reduce(add, 0)
-                        }
-                    }
-                );
-
-
-                console.log(placePricesSum);
-
-                return 0;
+                let placePricesSum = {};
+                for (const place in this.groupedPlaces) {
+                    placePricesSum[place] = this.groupedPlaces[place].reduce(add, 0);
+                }
+                return placePricesSum;
             },
 
 
             fiveMostImportantPlaces() {
-                function comparePlaces(a, b) {
-                    return b.place_total - a.place_total
+                let placesToSort = [];
+                for (let place in this.sumPlacesPrice) {
+                    placesToSort.push([place, this.sumPlacesPrice[place]]);
                 }
 
-                let result = this.groupedPlacesPrice;
-                // if (result.length > 5) {
-                result = result.sort(comparePlaces()).slice(0, 5)
-                // }
-                return result
+                let sortedPlaces = placesToSort
+                if (sortedPlaces.length > 5) {
+                    sortedPlaces = sortedPlaces.sort(function (a, b) {
+                        return b[1] - a[1];
+                    }).slice(0, 5);
+                }
+
+                let result = {};
+                for (let place in sortedPlaces){
+                    result[sortedPlaces[place][0]] = sortedPlaces[place][1];
+                }
+
+                return result;
             },
         },
         beforeCreate() {
@@ -81,16 +65,13 @@
         },
         methods: {
             fillData() {
+                // console.log(Object.keys(this.fiveMostImportantPlaces))
                 this.datacollection = {
-                    labels: ["Krakow", "Warszawa", "Other"],
+                    labels: Object.keys(this.fiveMostImportantPlaces),
                     datasets: [
                         {
-                            backgroundColor: ["#028090", "#00a896", "#02c39a"],
-                            data: [
-                                this.fiveMostImportantPlaces,
-                                this.getRandomInt(),
-                                this.getRandomInt()
-                            ]
+                            backgroundColor: ["#028090", "#00a896", "#02c39a", "#028090", "#00a896"],
+                            data: Object.values(this.fiveMostImportantPlaces)
                         }
                     ]
                 };
