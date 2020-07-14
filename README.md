@@ -31,8 +31,6 @@ To start the project locally clone the repository, start a virtual environment (
 
 ./manage.py runserver
 
-To visit the live demo project go here:
-https://saveupyourmoney.herokuapp.com/
 
 ## 🪁 Join us
 If you want to help us with the development of this project or become a contributor, do not hesitate to drop us a line via e-mail: michal.kawa@hotmail.com. We will gladly discuss any ideas or any upgrades to our current iteration of the project! :)
